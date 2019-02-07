@@ -10,23 +10,34 @@ import Foundation
 
 struct SetCard: Hashable, CustomStringConvertible {
     
-    var hashValue : Int {return cardHash}
-    var description: String {return "\(color)\(shape)\(fill)\(count)"}
+    var description: String {return "\(color)\(shape)\(fill)\(count)"} //Custom String Convertible implementation
     
-    static func == (lhs: SetCard, rhs: SetCard) -> Bool {
+    var hashValue : Int {return cardHash} //Hashable implementation
+    static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
         return lhs.cardHash == rhs.cardHash
     }
     
-    private var cardHash: Int {
+    private var cardHash: Int { //Unique descriptor of each card
         return Int(color.description + shape.description + fill.description + count.description) ?? 10000
     }
+    
+    //MARK: - Properties
+    /***************************************************************/
+    
+    //SetCard has four properties
     
     var color: Color
     var shape: Shape
     var fill: Fill
     var count: Count
     
-    enum Color: String, CustomStringConvertible {
+    
+    //MARK: - Types
+    /***************************************************************/
+    
+    //SetCard defines four Types, one for each property
+    
+    enum Color: String, CustomStringConvertible { //Define Color Type
         var description: String {return String(rawValue.last ?? "0")}
         
         case color1
@@ -36,7 +47,7 @@ struct SetCard: Hashable, CustomStringConvertible {
         static var all = [Color.color1, .color2, .color3]
     }
     
-    enum Shape: String, CustomStringConvertible {
+    enum Shape: String, CustomStringConvertible { //Define Shape Type
         var description: String {return String(rawValue.last ?? "0")}
         
         case shape1
@@ -46,7 +57,7 @@ struct SetCard: Hashable, CustomStringConvertible {
         static var all = [Shape.shape1, .shape2, .shape3]
     }
     
-    enum Fill: String, CustomStringConvertible {
+    enum Fill: String, CustomStringConvertible { //Define Fill Type
         var description: String {return String(rawValue.last ?? "0")}
         
         case fill1
@@ -56,7 +67,7 @@ struct SetCard: Hashable, CustomStringConvertible {
         static var all = [Fill.fill1, .fill2, .fill3]
     }
     
-    enum Count: String, CustomStringConvertible {
+    enum Count: String, CustomStringConvertible { //Define Count Type
         var description: String {return String(rawValue.last ?? "0")}
         
         case count1
