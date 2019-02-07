@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     //MARK: - Properties
     /***************************************************************/
     
+    var deck = GameOfSet()
     
     //MARK: - IBOutlets and Actions
     /***************************************************************/
@@ -21,7 +22,9 @@ class ViewController: UIViewController {
     
     //MARK: - Methods
     /***************************************************************/
-    
+//    override func viewDidLoad() {
+//        <#code#>
+//    }
     
     //MARK: - Haptic
     /***************************************************************/

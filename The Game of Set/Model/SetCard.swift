@@ -13,6 +13,7 @@ struct SetCard: Hashable, CustomStringConvertible {
     var description: String {return "\(color)\(shape)\(fill)\(count)"} //Custom String Convertible implementation
     
     var hashValue : Int {return cardHash} //Hashable implementation
+    
     static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
         return lhs.cardHash == rhs.cardHash
     }
