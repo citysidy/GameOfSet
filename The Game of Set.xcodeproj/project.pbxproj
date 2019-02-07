@@ -12,6 +12,8 @@
 		DE4B14FB220BC4C200D4F314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4B14F9220BC4C200D4F314 /* Main.storyboard */; };
 		DE4B14FD220BC4C400D4F314 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE4B14FC220BC4C400D4F314 /* Assets.xcassets */; };
 		DE4B1500220BC4C400D4F314 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */; };
+		DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B1509220BC86400D4F314 /* SetCard.swift */; };
+		DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B150B220BC88100D4F314 /* GameOfSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		DE4B14FC220BC4C400D4F314 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE4B14FF220BC4C400D4F314 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE4B1501220BC4C400D4F314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE4B1509220BC86400D4F314 /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
+		DE4B150B220BC88100D4F314 /* GameOfSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +58,48 @@
 		DE4B14F4220BC4C200D4F314 /* The Game of Set */ = {
 			isa = PBXGroup;
 			children = (
-				DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */,
-				DE4B14F7220BC4C200D4F314 /* ViewController.swift */,
-				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
+				DE4B150D220BC88600D4F314 /* Model */,
+				DE4B1508220BC83700D4F314 /* Controller */,
+				DE4B1507220BC82A00D4F314 /* View */,
 				DE4B14FC220BC4C400D4F314 /* Assets.xcassets */,
-				DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */,
+				DE4B150E220BC89000D4F314 /* Supporting Files */,
 				DE4B1501220BC4C400D4F314 /* Info.plist */,
 			);
 			path = "The Game of Set";
+			sourceTree = "<group>";
+		};
+		DE4B1507220BC82A00D4F314 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DE4B1508220BC83700D4F314 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B14F7220BC4C200D4F314 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DE4B150D220BC88600D4F314 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B1509220BC86400D4F314 /* SetCard.swift */,
+				DE4B150B220BC88100D4F314 /* GameOfSet.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE4B150E220BC89000D4F314 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */,
+				DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +173,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */,
+				DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */,
 				DE4B14F8220BC4C200D4F314 /* ViewController.swift in Sources */,
 				DE4B14F6220BC4C200D4F314 /* AppDelegate.swift in Sources */,
 			);
