@@ -8,74 +8,71 @@
 
 import Foundation
 
-struct SetCard: Hashable, CustomStringConvertible {
+struct SetCard: CustomStringConvertible, Hashable {
     
-    var description: String {return "\(color)\(shape)\(fill)\(count)"} //Custom String Convertible implementation
-    
+    var description: String {return "\(color)\(shape)\(fill)\(pips)"} //Custom String Convertible implementation
     var hashValue : Int {return cardHash} //Hashable implementation
-    
     static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
         return lhs.cardHash == rhs.cardHash
     }
-    
-    private var cardHash: Int { //Unique descriptor of each card
-        return Int(color.description + shape.description + fill.description + count.description) ?? 10000
-    }
+
     
     //MARK: - Properties
     /***************************************************************/
     
-    //SetCard has four properties
+    //SetCard has five properties
     
-    var color: Color
-    var shape: Shape
-    var fill: Fill
-    var count: Count
-    
+    let color: Color
+    let shape: Shape
+    let fill: Fill
+    let pips: Pips
+    var cardHash: Int {
+        return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
+    }
     
     //MARK: - Types
     /***************************************************************/
     
     //SetCard defines four Types, one for each property
     
-    enum Color: String, CustomStringConvertible { //Define Color Type
-        var description: String {return String(rawValue.last ?? "0")}
+    enum Color: Int, CustomStringConvertible { //Define Color Type
+        var description: String {return "C\(rawValue)"}
         
-        case color1
-        case color2
-        case color3
+        case c0
+        case c1
+        case c2
         
-        static var all = [Color.color1, .color2, .color3]
+        static var all = [Color.c0, .c1, .c2]
     }
     
-    enum Shape: String, CustomStringConvertible { //Define Shape Type
-        var description: String {return String(rawValue.last ?? "0")}
+    enum Shape: Int, CustomStringConvertible { //Define Shape Type
+        var description: String {return "S\(rawValue)"}
         
-        case shape1
-        case shape2
-        case shape3
+        case s0
+        case s1
+        case s2
         
-        static var all = [Shape.shape1, .shape2, .shape3]
+        static var all = [Shape.s0, .s1, .s2]
     }
     
-    enum Fill: String, CustomStringConvertible { //Define Fill Type
-        var description: String {return String(rawValue.last ?? "0")}
+    enum Fill: Int, CustomStringConvertible { //Define Fill Type
+        var description: String {return "F\(rawValue)"}
         
-        case fill1
-        case fill2
-        case fill3
+        case f0
+        case f1
+        case f2
         
-        static var all = [Fill.fill1, .fill2, .fill3]
+        static var all = [Fill.f0, .f1, .f2]
     }
     
-    enum Count: String, CustomStringConvertible { //Define Count Type
-        var description: String {return String(rawValue.last ?? "0")}
+    enum Pips: Int, CustomStringConvertible { //Define Count Type
+        var description: String {return "P\(rawValue)"}
         
-        case count1
-        case count2
-        case count3
+        case p0
+        case p1
+        case p2
         
-        static var all = [Count.count1, .count2, .count3]
+        static var all = [Pips.p0, .p1, .p2]
     }
 }
 
