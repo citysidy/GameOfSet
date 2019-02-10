@@ -16,14 +16,28 @@ class GameOfSet {
     private var cards = [SetCard]()
     private(set) var inPlay: [SetCard] = []
     private var outOfPlay: [SetCard] = []
-    private var selectedCards: [SetCard] = []
+    private(set) var indiciesOfSelectedCards: [Int] = []
     private var isASet: Bool? {
-        get{
-            guard selectedCards.count == 3 else {
-                return nil
-            }
-            return selectedCards.map{$0.hashValue}.reduce(0, +) % 3 == 0
+        var selectedCards = [SetCard]()
+        for item in indiciesOfSelectedCards {
+            selectedCards.append(inPlay[item])
         }
+        guard selectedCards.count == 3 else {
+            return nil
+        }
+        let selectedHashes = selectedCards.map{$0.hashValue}
+        print(selectedHashes)
+        let sum = selectedHashes.reduce(0, +)
+        print(sum)
+        let check = String(sum)
+        let digits = Array(check)
+        print(digits)
+        let setTest = digits.filter{$0 != "0" && $0 != "3" && $0 != "6"}
+        print(setTest.count)
+        if setTest.count > 0 {
+            return false
+        }
+        return true
     }
     
     
@@ -46,35 +60,42 @@ class GameOfSet {
     /***************************************************************/
     
     func deal(_ number: Int) {
+        guard cards.count >= number else {
+            return
+        }
         for _ in 1...number {
             inPlay.append(cards.remove(at: cards.count.rando))
         }
-        //return Array(inPlay.suffix(number))
     }
     
-    func cardSelected(_ card: SetCard) {
-        if selectedCards.count == 3 {
-            calculateScore()
+    func cardSelected(_ cardIndex: Int) {
+        if indiciesOfSelectedCards.contains(cardIndex) {
+            indiciesOfSelectedCards.remove(at: indiciesOfSelectedCards.firstIndex(of: cardIndex)!)
+        } else {
+            indiciesOfSelectedCards.append(cardIndex)
         }
-        if selectedCards.count == 4 {
-            selectedCards = Array(selectedCards.suffix(1))
+        if indiciesOfSelectedCards.count == 3 {
+            checkForSet()
         }
-        if selectedCards.contains(card) {
-            selectedCards.remove(at: selectedCards.firstIndex(of: card) ?? 0)
-        }
-        
     }
     
     func calculateScore() {
         
     }
     
-    func removeSelectedFromPlay() {
+    func checkForSet() {
         if isASet! {
-            for index in selectedCards.indices {
-                inPlay.remove(at: inPlay.firstIndex(of: selectedCards[index]) ?? 0)
-                
+            print("Set!\n")
+            for index in indiciesOfSelectedCards {
+                print(index)
+                //outOfPlay.append(inPlay.remove(at: index))
             }
+        } else {
+            print("No Set\n")
         }
     }
+    
+    
+    
+    
 }

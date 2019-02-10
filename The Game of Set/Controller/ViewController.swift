@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     /***************************************************************/
     
     var deck = GameOfSet()
-    let colors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)]
+    let colors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
     let shapes = ["▲", "●", "■"]
     
     //MARK: - IBOutlets and Actions
@@ -23,14 +23,25 @@ class ViewController: UIViewController {
     
     @IBOutlet var cardButtons: [UIButton]!
     @IBAction func cardTouched(_ sender: UIButton) {
+        if let selectedIndex = cardButtons.firstIndex(of: sender) {
+            deck.cardSelected(selectedIndex)
+        }
         updateViewFromModel()
     }
     @IBAction func deal3Button(_ sender: UIButton) {
+        guard deck.inPlay.count < 22  else {
+            return
+        }
+        deck.deal(3)
+        updateViewFromModel()
     }
     
     //MARK: - Methods
     /***************************************************************/
     override func viewDidLoad() {
+        for button in cardButtons {
+            button.layer.cornerRadius = 5.0
+        }
         deck.deal(12)
     }
     
@@ -40,17 +51,22 @@ class ViewController: UIViewController {
             cardButtons[index].titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
             cardButtons[index].setAttributedTitle(title, for: .normal)
         }
+        for button in cardButtons {
+            button.layer.borderWidth = 0
+        }
+        for index in deck.indiciesOfSelectedCards {
+            cardButtons[index].layer.borderWidth = 3.0
+            cardButtons[index].layer.borderColor = UIColor.blue.cgColor
+        }
     }
-    
     
     func getCardTitle(of card: SetCard) -> NSAttributedString {
         var attributes: [NSAttributedString.Key : Any] = [:]
-        var text: NSAttributedString
         var color = colors[card.color.rawValue]
         var shape = shapes[card.shape.rawValue]
         switch card.fill.rawValue {
             case 0:
-                attributes[.strokeWidth] = 4
+                attributes[.strokeWidth] = 6
             case 1:
                 color = color.withAlphaComponent(0.50)
                 fallthrough
@@ -59,7 +75,6 @@ class ViewController: UIViewController {
         }
         attributes[.strokeColor] = color
         attributes[.font] = UIFont.systemFont(ofSize: 26)
-        //attributes[.strokeWidth] = fill
         switch card.pips.rawValue {
             case 0:
                 break
@@ -68,9 +83,7 @@ class ViewController: UIViewController {
             default:
                 shape = shape + "\n" + shape + "\n" + shape
         }
-        print(shape + "\n")
-        text = NSAttributedString(string: shape, attributes: attributes)
-        return text
+        return NSAttributedString(string: shape, attributes: attributes)
     }
     
     
