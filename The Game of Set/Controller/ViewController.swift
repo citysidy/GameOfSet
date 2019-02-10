@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         updateViewFromModel()
     }
     @IBAction func deal3Button(_ sender: UIButton) {
-        guard deck.inPlay.count < 22  else {
+        guard deck.inPlay.count < cardButtons.count - 2  else {
             return
         }
         deck.deal(3)
@@ -41,15 +41,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         for button in cardButtons {
             button.layer.cornerRadius = 5.0
+            button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         }
         deck.deal(12)
     }
     
     func updateViewFromModel() {
         for index in deck.inPlay.indices {
-            let title = getCardTitle(of: deck.inPlay[index])
-            cardButtons[index].titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-            cardButtons[index].setAttributedTitle(title, for: .normal)
+            
+            cardButtons[index].setAttributedTitle(getCardTitle(of: deck.inPlay[index]), for: .normal)
         }
         for button in cardButtons {
             button.layer.borderWidth = 0
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
             case 0:
                 attributes[.strokeWidth] = 6
             case 1:
-                color = color.withAlphaComponent(0.50)
+                color = color.withAlphaComponent(0.40)
                 fallthrough
             default:
                 attributes[.foregroundColor] = color
