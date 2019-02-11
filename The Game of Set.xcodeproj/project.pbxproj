@@ -14,6 +14,11 @@
 		DE4B1500220BC4C400D4F314 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */; };
 		DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B1509220BC86400D4F314 /* SetCard.swift */; };
 		DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B150B220BC88100D4F314 /* GameOfSet.swift */; };
+		DEEDD2AA22110B830030084C /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2A922110B830030084C /* ding.wav */; };
+		DEEDD2AC22110B8F0030084C /* error.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2AB22110B8F0030084C /* error.wav */; };
+		DEEDD2AE22110CF20030084C /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2AD22110CF20030084C /* beep.wav */; };
+		DEEDD2B022110F090030084C /* cardSlide6.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2AF22110F090030084C /* cardSlide6.wav */; };
+		DEEDD2B2221111180030084C /* cardShuffle.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2B1221111180030084C /* cardShuffle.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +31,11 @@
 		DE4B1501220BC4C400D4F314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE4B1509220BC86400D4F314 /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
 		DE4B150B220BC88100D4F314 /* GameOfSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfSet.swift; sourceTree = "<group>"; };
+		DEEDD2A922110B830030084C /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		DEEDD2AB22110B8F0030084C /* error.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = error.wav; sourceTree = "<group>"; };
+		DEEDD2AD22110CF20030084C /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
+		DEEDD2AF22110F090030084C /* cardSlide6.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cardSlide6.wav; sourceTree = "<group>"; };
+		DEEDD2B1221111180030084C /* cardShuffle.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cardShuffle.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +106,11 @@
 		DE4B150E220BC89000D4F314 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DEEDD2B1221111180030084C /* cardShuffle.wav */,
+				DEEDD2AF22110F090030084C /* cardSlide6.wav */,
+				DEEDD2AD22110CF20030084C /* beep.wav */,
+				DEEDD2AB22110B8F0030084C /* error.wav */,
+				DEEDD2A922110B830030084C /* ding.wav */,
 				DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */,
 				DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */,
 			);
@@ -161,7 +176,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE4B1500220BC4C400D4F314 /* LaunchScreen.storyboard in Resources */,
+				DEEDD2B022110F090030084C /* cardSlide6.wav in Resources */,
+				DEEDD2B2221111180030084C /* cardShuffle.wav in Resources */,
 				DE4B14FD220BC4C400D4F314 /* Assets.xcassets in Resources */,
+				DEEDD2AE22110CF20030084C /* beep.wav in Resources */,
+				DEEDD2AC22110B8F0030084C /* error.wav in Resources */,
+				DEEDD2AA22110B830030084C /* ding.wav in Resources */,
 				DE4B14FB220BC4C200D4F314 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

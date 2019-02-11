@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -14,50 +15,93 @@ class ViewController: UIViewController {
     //MARK: - Properties
     /***************************************************************/
     
-    var deck = GameOfSet()
+    var game = GameOfSet()
     let colors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
     let shapes = ["▲", "●", "■"]
+    let size: CGFloat = 20
+    
     
     //MARK: - IBOutlets and Actions
     /***************************************************************/
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var remainingCardsLabel: UILabel!
+    
     @IBOutlet var cardButtons: [UIButton]!
-    @IBAction func cardTouched(_ sender: UIButton) {
+    @IBAction func cardButtonSelected(_ sender: UIButton) {
         if let selectedIndex = cardButtons.firstIndex(of: sender) {
-            deck.cardSelected(selectedIndex)
+            game.cardSelected(selectedIndex)
+            hapticFeedback(called: "peek")
         }
-        updateViewFromModel()
-    }
-    @IBAction func deal3Button(_ sender: UIButton) {
-        guard deck.inPlay.count < cardButtons.count - 2  else {
-            return
-        }
-        deck.deal(3)
         updateViewFromModel()
     }
     
+    @IBOutlet weak var dealButtonLabel: UIButton!
+    @IBAction func dealButton(_ sender: UIButton) {
+        guard game.cardsInPlay.count < cardButtons.count - 2  else {
+            return
+        }
+        if game.cardsInPlay.count == 0 || game.cardsRemaining == 0 {
+            playSound("cardShuffle", dot: "wav")
+            newGame()
+        } else {
+            playSound("cardSlide6", dot: "wav")
+            game.deal(3)
+        }
+        updateViewFromModel()
+    }
+    
+    
     //MARK: - Methods
     /***************************************************************/
+    
     override func viewDidLoad() {
         for button in cardButtons {
             button.layer.cornerRadius = 5.0
             button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+            button.isEnabled = false
+            //button.isHidden = true
         }
-        deck.deal(12)
+        remainingCardsLabel.isHidden = true
+    }
+    
+    func newGame() {
+        game = GameOfSet()
+        game.deal(12)
+        dealButtonLabel.setTitle("Deal 3 Cards", for: .normal)
+        remainingCardsLabel.isHidden = false
     }
     
     func updateViewFromModel() {
-        for index in deck.inPlay.indices {
-            
-            cardButtons[index].setAttributedTitle(getCardTitle(of: deck.inPlay[index]), for: .normal)
+        if game.cardsRemaining == 0 {
+            dealButtonLabel.setTitle("Start New Game", for: .normal)
         }
         for button in cardButtons {
             button.layer.borderWidth = 0
         }
-        for index in deck.indiciesOfSelectedCards {
-            cardButtons[index].layer.borderWidth = 3.0
-            cardButtons[index].layer.borderColor = UIColor.blue.cgColor
+        for index in game.cardsInPlay.indices {
+            cardButtons[index].isEnabled = true
+            cardButtons[index].isHidden = false
+            cardButtons[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
         }
+        for index in game.indexOfSelected {
+            cardButtons[index].layer.borderWidth = 3.0
+            var highlightColor = UIColor.blue.cgColor
+            if let set = game.isASet {
+                if set {
+                    highlightColor = UIColor.green.cgColor
+                    playSound("ding", dot: "wav")
+                } else {
+                    highlightColor = UIColor.red.cgColor
+                    playSound("error", dot: "wav")
+                }
+            } else {
+                playSound("beep", dot: "wav")
+            }
+            cardButtons[index].layer.borderColor = highlightColor
+        }
+        scoreLabel.text = "Score: \(game.score)"
+        remainingCardsLabel.text = "Cards Remaining: \(game.cardsRemaining)"
     }
     
     func getCardTitle(of card: SetCard) -> NSAttributedString {
@@ -74,7 +118,7 @@ class ViewController: UIViewController {
                 attributes[.foregroundColor] = color
         }
         attributes[.strokeColor] = color
-        attributes[.font] = UIFont.systemFont(ofSize: 26)
+        attributes[.font] = UIFont.systemFont(ofSize: size)
         switch card.pips.rawValue {
             case 0:
                 break
@@ -87,37 +131,35 @@ class ViewController: UIViewController {
     }
     
     
-    
-    
-    
     //MARK: - Haptic
     /***************************************************************/
     
-//    private func hapticFeedback(called name: String) {
-//        let haptics = ["peek" : 1519, "pop" : 1520, "cancelled" : 1521, "tryAgain" : 1102, "failed" : 1107, "vibrate" : 4095]
-//        if let vibrationID = haptics[name] {
-//            AudioServicesPlaySystemSound(SystemSoundID(vibrationID))
-//            if self.debug {print("Haptic played: \(vibrationID) - \(name)")}
-//        } else {
-//            print("\n=======================\nError: hapticFeedback - name not found\n=======================\n")
-//        }
-//    }
+    private func hapticFeedback(called name: String) {
+        let haptics = ["peek" : 1519, "pop" : 1520, "cancelled" : 1521, "tryAgain" : 1102, "failed" : 1107, "vibrate" : 4095]
+        if let vibrationID = haptics[name] {
+            AudioServicesPlaySystemSound(SystemSoundID(vibrationID))
+        } else {
+            print("\n=======================\nError: hapticFeedback - name not found\n=======================\n")
+        }
+    }
+    
     
     //MARK: - Audio
     /***************************************************************/
     
-//    private func playSound(_ name: String, dot ext: String) {
-//        let fileURL = Bundle.main.url(forResource: name, withExtension: ext)!
-//        var mySound: SystemSoundID = 0
-//        AudioServicesCreateSystemSoundID(fileURL as CFURL, &mySound)
-//        AudioServicesPlaySystemSound(mySound)
-//        if debug {print("Sound played: \(mySound) - \(name)")}
-//    }
+    private func playSound(_ name: String, dot ext: String) {
+        let fileURL = Bundle.main.url(forResource: name, withExtension: ext)!
+        var mySound: SystemSoundID = 0
+        AudioServicesCreateSystemSoundID(fileURL as CFURL, &mySound)
+        AudioServicesPlaySystemSound(mySound)
+    }
+    
     
     //MARK: - Shake
     /***************************************************************/
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        newGame()
     }
     
     
