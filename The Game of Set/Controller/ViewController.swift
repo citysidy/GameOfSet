@@ -11,6 +11,12 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
+    //TODO: New Game method testing and button.
+    //TODO: Count sets in play.
+    //TODO: Refactor and comment.
+    //TODO: When any card is chosen and there are already 3 non-matching Set cards selected, deselect those 3 non-matching cards and then select the chosen card.
+    //TODO: Add a sensible extension to some data structure.
+    #warning ("TODO: Game Over Recognition")
     
     //MARK: - Properties
     /***************************************************************/
@@ -84,7 +90,7 @@ class ViewController: UIViewController {
             cardButtonLabels[item].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
             cardButtonLabels[item].setAttributedTitle(nil, for: .normal)
         }
-        updateRemainingCardsLabel()
+        updateTopLabels()
         updateDealButtonLabel()
         feedback()
     }
@@ -96,7 +102,11 @@ class ViewController: UIViewController {
             dealButtonLabel.isEnabled = false
         } else if game.indexOfSelected.count == 3 {
             if game.isASet! {
-                dealButtonLabel.setTitle("Replace Set", for: .normal)
+                if game.cards.count > 0 {
+                    dealButtonLabel.setTitle("Replace Set", for: .normal)
+                } else {
+                    dealButtonLabel.setTitle("Clear Set", for: .normal)
+                }
             } else {
                 dealButtonLabel.setTitle("Clear", for: .normal)
             }
@@ -105,7 +115,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateRemainingCardsLabel() {
+    func updateTopLabels() {
         remainingCardsLabel.text = "Cards Remaining: \(game.cards.count)"
         if game.testMode {
             scoreLabel.text = "TEST MODE"
