@@ -10,22 +10,22 @@ import Foundation
 
 class GameOfSet {
     
-    private var cards = [SetCard]()
-    private var resetOnNext = false
-    
+    var testMode = false
+
+    private(set) var cards = [SetCard]()
     private(set) var score = 0
     private(set) var cardsInPlay: [SetCard] = []
+    private(set) var indexOfOutOfPlay: [Int] = []
     private(set) var indexOfSelected: [Int] = []
+    private var resetOnNext = false
     
-    var cardsRemaining: Int {
-        return 81 - cards.count
-    }
     var isASet: Bool? {
         guard indexOfSelected.count == 3 else {return nil}
         var selectedCards = [SetCard]()
         for item in indexOfSelected {
             selectedCards.append(cardsInPlay[item])
         }
+        if testMode {return true}
         return (Array(String(selectedCards.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0
     }
     
@@ -34,6 +34,7 @@ class GameOfSet {
     /***************************************************************/
     
     init() {
+        print("Game Of Set Initialized\n")
         for color in SetCard.Color.all {
             for shape in SetCard.Shape.all {
                 for fill in SetCard.Fill.all {
@@ -54,17 +55,20 @@ class GameOfSet {
     }
     
     func deal(_ number: Int) {
-        guard cards.count >= number else {
-            return
-        }
-        for _ in 1...number {
-            cardsInPlay.append(getRandomCard())
+        if indexOfSelected.count == 3 {
+            resetSelectedCards()
+        } else {
+            guard cards.count > 0 else {return}
+            for _ in 1...number {
+                cardsInPlay.append(getRandomCard())
+            }
         }
     }
     
     func cardSelected(_ cardIndex: Int) {
         if resetOnNext {
             resetSelectedCards()
+            return
         }
         if indexOfSelected.contains(cardIndex) {
             indexOfSelected.remove(at: indexOfSelected.firstIndex(of: cardIndex)!)
@@ -89,22 +93,29 @@ class GameOfSet {
     }
     
     func replaceSet() {
-        guard cards.count >= indexOfSelected.count else {return}
         for item in indexOfSelected {
-            cardsInPlay[item] = getRandomCard()
+            if cards.count > 0 {
+                cardsInPlay[item] = getRandomCard()
+            } else {
+                indexOfOutOfPlay.append(item)
+            }
         }
     }
     
     func calculateScore() {
         if isASet! {
-            print("Set!\n")
             score += 5
         } else {
-            print("No Set\n")
             score -= 5
         }
     }
     
-    
+    func newGame() {
+        score = 0
+        cardsInPlay = []
+        indexOfOutOfPlay = []
+        indexOfSelected = []
+        resetOnNext = false
+    }
     
 }
