@@ -54,7 +54,7 @@ class GameOfSet {
         return cards.remove(at: cards.count.rando)
     }
     
-    func deal(_ number: Int) {
+    func action(deal number: Int = 3) {
         if indexOfSelected.count == 3 {
             resetSelectedCards()
         } else {

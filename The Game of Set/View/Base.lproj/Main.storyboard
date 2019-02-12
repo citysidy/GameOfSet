@@ -32,7 +32,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PfF-qK-hYM"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PfF-qK-hYM"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VcU-7s-NdH">
@@ -42,7 +42,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sfW-nN-sTq"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sfW-nN-sTq"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eWp-jZ-Wuw">
@@ -52,7 +52,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="03G-ko-Wtc"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="03G-ko-Wtc"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QnU-RO-eoI">
@@ -62,7 +62,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="83F-fG-r3g"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="83F-fG-r3g"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -77,7 +77,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="myX-eO-Eu1"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="myX-eO-Eu1"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IkV-y2-uSc">
@@ -87,7 +87,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MFh-0M-2nW"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MFh-0M-2nW"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yPk-Qh-oAq">
@@ -97,7 +97,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gaV-zt-409"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gaV-zt-409"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Skh-HD-wjD">
@@ -107,7 +107,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CTx-Jf-m2Z"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CTx-Jf-m2Z"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -122,7 +122,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h9k-Os-mhQ"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h9k-Os-mhQ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioR-do-JGS">
@@ -132,7 +132,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JdS-m3-2V3"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JdS-m3-2V3"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kfj-3n-7z5">
@@ -142,7 +142,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1CV-3c-eXq"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1CV-3c-eXq"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j8Q-ae-oSU">
@@ -152,7 +152,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IBh-3L-tMe"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IBh-3L-tMe"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -167,7 +167,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gxa-7E-rDt"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gxa-7E-rDt"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q6r-62-2gy">
@@ -177,7 +177,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ajX-Tg-5TS"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ajX-Tg-5TS"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFQ-F2-9pr">
@@ -187,7 +187,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wKf-v3-Rk8"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wKf-v3-Rk8"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qp-x3-95S">
@@ -197,7 +197,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wvU-T5-Ooq"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wvU-T5-Ooq"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -212,7 +212,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vyt-rf-sO5"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vyt-rf-sO5"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15y-hg-irU">
@@ -222,7 +222,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BDJ-E5-ZhO"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BDJ-E5-ZhO"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vi3-bz-oNF">
@@ -232,7 +232,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1G7-Fh-xOO"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1G7-Fh-xOO"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py6-Ym-s6Z">
@@ -242,7 +242,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SGY-y9-laM"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SGY-y9-laM"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -257,7 +257,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QJD-xl-vVK"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QJD-xl-vVK"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wE-9m-EY3">
@@ -267,7 +267,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zgI-Ct-2vJ"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zgI-Ct-2vJ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nPz-zf-tix">
@@ -277,7 +277,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1fZ-iA-apo"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1fZ-iA-apo"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vB5-ub-MwJ">
@@ -287,7 +287,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <connections>
-                                                    <action selector="cardButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G4H-Hg-TjN"/>
+                                                    <action selector="cardButtons:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G4H-Hg-TjN"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -299,7 +299,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                 <state key="normal" title="Start New Game"/>
                                 <connections>
-                                    <action selector="dealButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gqT-xq-SSM"/>
+                                    <action selector="actionButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gqT-xq-SSM"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Game of Set" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkm-E3-XbT">
@@ -329,33 +329,33 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="dealButtonLabel" destination="1dV-nW-yFl" id="mSZ-Y5-Fnz"/>
+                        <outlet property="actionButtonLabel" destination="1dV-nW-yFl" id="mSZ-Y5-Fnz"/>
                         <outlet property="remainingCardsLabel" destination="Di0-Zj-g8E" id="cYa-Dl-bbx"/>
                         <outlet property="scoreLabel" destination="rkm-E3-XbT" id="9pJ-hR-vAJ"/>
-                        <outletCollection property="cardButtonLabels" destination="MLI-Pc-SZg" collectionClass="NSMutableArray" id="lEb-U2-9i7"/>
-                        <outletCollection property="cardButtonLabels" destination="VcU-7s-NdH" collectionClass="NSMutableArray" id="kTV-eq-Xaa"/>
-                        <outletCollection property="cardButtonLabels" destination="eWp-jZ-Wuw" collectionClass="NSMutableArray" id="6mu-nj-gMm"/>
-                        <outletCollection property="cardButtonLabels" destination="QnU-RO-eoI" collectionClass="NSMutableArray" id="fs1-Pp-AdK"/>
-                        <outletCollection property="cardButtonLabels" destination="Tzs-c5-7gh" collectionClass="NSMutableArray" id="l4a-Md-vzf"/>
-                        <outletCollection property="cardButtonLabels" destination="IkV-y2-uSc" collectionClass="NSMutableArray" id="lOl-2R-9ah"/>
-                        <outletCollection property="cardButtonLabels" destination="yPk-Qh-oAq" collectionClass="NSMutableArray" id="wnj-OC-Re5"/>
-                        <outletCollection property="cardButtonLabels" destination="Skh-HD-wjD" collectionClass="NSMutableArray" id="9Cy-mI-MLb"/>
-                        <outletCollection property="cardButtonLabels" destination="o4L-mN-ZBO" collectionClass="NSMutableArray" id="ArK-GI-rFz"/>
-                        <outletCollection property="cardButtonLabels" destination="ioR-do-JGS" collectionClass="NSMutableArray" id="7kY-7P-ORC"/>
-                        <outletCollection property="cardButtonLabels" destination="Kfj-3n-7z5" collectionClass="NSMutableArray" id="qmb-S6-pGc"/>
-                        <outletCollection property="cardButtonLabels" destination="j8Q-ae-oSU" collectionClass="NSMutableArray" id="AOp-fT-KgG"/>
-                        <outletCollection property="cardButtonLabels" destination="ZS7-5k-jwK" collectionClass="NSMutableArray" id="Iic-hp-q1A"/>
-                        <outletCollection property="cardButtonLabels" destination="Q6r-62-2gy" collectionClass="NSMutableArray" id="m8N-hk-SqZ"/>
-                        <outletCollection property="cardButtonLabels" destination="AFQ-F2-9pr" collectionClass="NSMutableArray" id="r2i-n1-AVp"/>
-                        <outletCollection property="cardButtonLabels" destination="9qp-x3-95S" collectionClass="NSMutableArray" id="MuT-Mf-WJf"/>
-                        <outletCollection property="cardButtonLabels" destination="qSw-4G-TQZ" collectionClass="NSMutableArray" id="DEQ-p4-uCs"/>
-                        <outletCollection property="cardButtonLabels" destination="15y-hg-irU" collectionClass="NSMutableArray" id="a6s-ar-910"/>
-                        <outletCollection property="cardButtonLabels" destination="vi3-bz-oNF" collectionClass="NSMutableArray" id="h9s-tl-7FV"/>
-                        <outletCollection property="cardButtonLabels" destination="py6-Ym-s6Z" collectionClass="NSMutableArray" id="usb-sy-b6u"/>
-                        <outletCollection property="cardButtonLabels" destination="WTB-X1-WAO" collectionClass="NSMutableArray" id="rCB-GP-U2V"/>
-                        <outletCollection property="cardButtonLabels" destination="6wE-9m-EY3" collectionClass="NSMutableArray" id="fay-tI-bc9"/>
-                        <outletCollection property="cardButtonLabels" destination="nPz-zf-tix" collectionClass="NSMutableArray" id="Wby-ha-RP2"/>
-                        <outletCollection property="cardButtonLabels" destination="vB5-ub-MwJ" collectionClass="NSMutableArray" id="Skv-ZC-nOR"/>
+                        <outletCollection property="cardButtonsLabels" destination="MLI-Pc-SZg" collectionClass="NSMutableArray" id="lEb-U2-9i7"/>
+                        <outletCollection property="cardButtonsLabels" destination="VcU-7s-NdH" collectionClass="NSMutableArray" id="kTV-eq-Xaa"/>
+                        <outletCollection property="cardButtonsLabels" destination="eWp-jZ-Wuw" collectionClass="NSMutableArray" id="6mu-nj-gMm"/>
+                        <outletCollection property="cardButtonsLabels" destination="QnU-RO-eoI" collectionClass="NSMutableArray" id="fs1-Pp-AdK"/>
+                        <outletCollection property="cardButtonsLabels" destination="Tzs-c5-7gh" collectionClass="NSMutableArray" id="l4a-Md-vzf"/>
+                        <outletCollection property="cardButtonsLabels" destination="IkV-y2-uSc" collectionClass="NSMutableArray" id="lOl-2R-9ah"/>
+                        <outletCollection property="cardButtonsLabels" destination="yPk-Qh-oAq" collectionClass="NSMutableArray" id="wnj-OC-Re5"/>
+                        <outletCollection property="cardButtonsLabels" destination="Skh-HD-wjD" collectionClass="NSMutableArray" id="9Cy-mI-MLb"/>
+                        <outletCollection property="cardButtonsLabels" destination="o4L-mN-ZBO" collectionClass="NSMutableArray" id="ArK-GI-rFz"/>
+                        <outletCollection property="cardButtonsLabels" destination="ioR-do-JGS" collectionClass="NSMutableArray" id="7kY-7P-ORC"/>
+                        <outletCollection property="cardButtonsLabels" destination="Kfj-3n-7z5" collectionClass="NSMutableArray" id="qmb-S6-pGc"/>
+                        <outletCollection property="cardButtonsLabels" destination="j8Q-ae-oSU" collectionClass="NSMutableArray" id="AOp-fT-KgG"/>
+                        <outletCollection property="cardButtonsLabels" destination="ZS7-5k-jwK" collectionClass="NSMutableArray" id="Iic-hp-q1A"/>
+                        <outletCollection property="cardButtonsLabels" destination="Q6r-62-2gy" collectionClass="NSMutableArray" id="m8N-hk-SqZ"/>
+                        <outletCollection property="cardButtonsLabels" destination="AFQ-F2-9pr" collectionClass="NSMutableArray" id="r2i-n1-AVp"/>
+                        <outletCollection property="cardButtonsLabels" destination="9qp-x3-95S" collectionClass="NSMutableArray" id="MuT-Mf-WJf"/>
+                        <outletCollection property="cardButtonsLabels" destination="qSw-4G-TQZ" collectionClass="NSMutableArray" id="DEQ-p4-uCs"/>
+                        <outletCollection property="cardButtonsLabels" destination="15y-hg-irU" collectionClass="NSMutableArray" id="a6s-ar-910"/>
+                        <outletCollection property="cardButtonsLabels" destination="vi3-bz-oNF" collectionClass="NSMutableArray" id="h9s-tl-7FV"/>
+                        <outletCollection property="cardButtonsLabels" destination="py6-Ym-s6Z" collectionClass="NSMutableArray" id="usb-sy-b6u"/>
+                        <outletCollection property="cardButtonsLabels" destination="WTB-X1-WAO" collectionClass="NSMutableArray" id="rCB-GP-U2V"/>
+                        <outletCollection property="cardButtonsLabels" destination="6wE-9m-EY3" collectionClass="NSMutableArray" id="fay-tI-bc9"/>
+                        <outletCollection property="cardButtonsLabels" destination="nPz-zf-tix" collectionClass="NSMutableArray" id="Wby-ha-RP2"/>
+                        <outletCollection property="cardButtonsLabels" destination="vB5-ub-MwJ" collectionClass="NSMutableArray" id="Skv-ZC-nOR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
