@@ -11,17 +11,11 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
-    //TODO: New Game method testing and button.
     //TODO: Card size shouldn't change if there are no 3 (or 2) pip cards
     //TODO: Count sets in play.
-    //TODO: Refactor and comment.
-    //TODO: When any card is chosen and there are already 3 non-matching Set cards selected, deselect those 3 non-matching cards and then select the chosen card.
     //TODO: Add a sensible extension to some data structure.
-    //TODO: LaunchScreen.
     //TODO: Animations and delays.
-    //TODO: Better audio feedback for successful set.
-    #warning ("TODO: Game Over Recognition")
-    
+
     //MARK: - Properties
     /***************************************************************/
     
@@ -32,7 +26,7 @@ class ViewController: UIViewController {
     let symbolShapes = ["▲", "●", "■"]
     let symbolSize: CGFloat = 20
     
-    lazy var gameEnd = game.cardsInPlay.count - game.indexOfOutOfPlay.count < 12
+    var cardsLastCount = 0
     
     
     //MARK: - IBOutlets and Actions
@@ -45,22 +39,20 @@ class ViewController: UIViewController {
     @IBAction func cardButtons(_ sender: UIButton) {
         if let selectedIndex = cardButtonsLabels.firstIndex(of: sender) {
             game.cardSelected(selectedIndex)
-            hapticFeedback(called: "peek")
         }
         updateViewFromModel()
     }
     
     @IBOutlet weak var actionButtonLabel: UIButton!
     @IBAction func actionButton(_ sender: UIButton) {
-        defer {updateViewFromModel()}
-        if game.cardsInPlay.count == 0 || gameEnd {
-            newGame()
-        } else {
-            game.action()
-            playSound("cardSlide6", dot: "wav")
-        }
+        game.action()
+        updateViewFromModel()
     }
     
+    @IBAction func newGameButton(_ sender: UIButton) {
+        newGame()
+    }
+
     
     //MARK: - Methods
     /***************************************************************/
@@ -71,16 +63,23 @@ class ViewController: UIViewController {
             button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
             button.isEnabled = false
         }
+        actionButtonLabel.isEnabled = false
+        actionButtonLabel.isHidden = true
         remainingCardsLabel.isHidden = true
     }
     
     func newGame() {
+        for index in cardButtonsLabels.indices {
+            hideCardButton(at: index)
+        }
+        actionButtonLabel.isEnabled = true
+        actionButtonLabel.isHidden = false
+        remainingCardsLabel.isHidden = false
+        cardsLastCount = 0
         game = GameOfSet()
         game.newGame()
-        game.action(deal: 12)
-        remainingCardsLabel.isHidden = false
-        playSound("cardShuffle", dot: "wav")
         updateViewFromModel()
+        playSound("cardShuffle", dot: "wav")
     }
     
     func updateViewFromModel() {
@@ -89,23 +88,23 @@ class ViewController: UIViewController {
             cardButtonsLabels[index].backgroundColor = cardBackgroundColor
             cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
         }
-        for item in game.indexOfOutOfPlay {
-            cardButtonsLabels[item].isEnabled = false
-            cardButtonsLabels[item].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-            cardButtonsLabels[item].setAttributedTitle(nil, for: .normal)
+        for index in game.indexOfOutOfPlay {
+            hideCardButton(at: index)
         }
+        updateActionButtonLabel()
         updateTopLabels()
-        updateDealButtonLabel()
         feedback()
     }
     
-    func updateDealButtonLabel() {
-        print("Cards In Play: \(game.cardsInPlay.count) - Cards Out Of Play: \(game.indexOfOutOfPlay.count)")
+    func hideCardButton(at index: Int) {
+        cardButtonsLabels[index].isEnabled = false
+        cardButtonsLabels[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        cardButtonsLabels[index].setAttributedTitle(nil, for: .normal)
+    }
+    
+    func updateActionButtonLabel() {
         actionButtonLabel.isEnabled = true
-        if game.cardsInPlay.count == 24 && game.isASet == nil {
-            actionButtonLabel.setTitle("No Room", for: .normal)
-            actionButtonLabel.isEnabled = false
-        } else if game.isASet != nil {
+        if game.isASet != nil {
             if game.isASet! {
                 if game.cards.count > 0 {
                     actionButtonLabel.setTitle("Replace Set", for: .normal)
@@ -116,13 +115,14 @@ class ViewController: UIViewController {
                 actionButtonLabel.setTitle("Clear", for: .normal)
             }
         } else {
-            if game.cards.count > 0 {
-                actionButtonLabel.setTitle("Deal 3 More", for: .normal)
-            } else if gameEnd {
-                actionButtonLabel.setTitle("Start New Game", for: .normal)
-            } else {
+            if game.cards.count == 0 {
                 actionButtonLabel.setTitle("No Cards Left", for: .normal)
                 actionButtonLabel.isEnabled = false
+            } else if game.cardsInPlay.count == 24 {
+                actionButtonLabel.setTitle("No Room", for: .normal)
+                actionButtonLabel.isEnabled = false
+            } else if game.cards.count > 0 {
+                actionButtonLabel.setTitle("Add 3 Cards", for: .normal)
             }
         }
     }
@@ -182,7 +182,13 @@ class ViewController: UIViewController {
             }
             cardButtonsLabels[index].layer.borderColor = highlightColor
         }
+        if game.cards.count != cardsLastCount {
+            playSound("cardSlide6", dot: "wav")
+            cardsLastCount = game.cards.count
+        }
+        hapticFeedback(called: "peek")
     }
+    
     
     //MARK: - Haptic
     /***************************************************************/

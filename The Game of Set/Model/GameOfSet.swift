@@ -34,7 +34,6 @@ class GameOfSet {
     /***************************************************************/
     
     init() {
-        print("Game Of Set Initialized\n")
         for color in SetCard.Color.all {
             for shape in SetCard.Shape.all {
                 for fill in SetCard.Fill.all {
@@ -54,25 +53,27 @@ class GameOfSet {
         return cards.remove(at: cards.count.rando)
     }
     
-    func action(deal number: Int = 3) {
+    func action() {
         if indexOfSelected.count == 3 {
             resetSelectedCards()
         } else {
-            guard cards.count > 0 else {return}
-            for _ in 1...number {
+            for _ in 1...3 {
                 cardsInPlay.append(getRandomCard())
             }
         }
     }
     
     func cardSelected(_ cardIndex: Int) {
-        if resetOnNext {
-            resetSelectedCards()
-            return
-        }
         if indexOfSelected.contains(cardIndex) {
-            indexOfSelected.remove(at: indexOfSelected.firstIndex(of: cardIndex)!)
+            if resetOnNext {
+                resetSelectedCards()
+            } else {
+                indexOfSelected.remove(at: indexOfSelected.firstIndex(of: cardIndex)!)
+            }
         } else {
+            if resetOnNext {
+                resetSelectedCards()
+            }
             indexOfSelected.append(cardIndex)
             checkForThree()
         }
@@ -94,10 +95,10 @@ class GameOfSet {
     
     func replaceSet() {
         for item in indexOfSelected {
-            if cards.count > 0 {
-                cardsInPlay[item] = getRandomCard()
-            } else {
+            if cards.count == 0 {
                 indexOfOutOfPlay.append(item)
+            } else {
+                cardsInPlay[item] = getRandomCard()
             }
         }
     }
@@ -112,10 +113,12 @@ class GameOfSet {
     
     func newGame() {
         score = 0
-        cardsInPlay = []
         indexOfOutOfPlay = []
         indexOfSelected = []
         resetOnNext = false
+        for _ in 1...12 {
+            cardsInPlay.append(getRandomCard())
+        }
     }
     
 }
