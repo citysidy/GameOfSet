@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     let symbolSize: CGFloat = 20
     
     var cardsLastCount = 0
+    var outOfPlayLastCount = 0
     
     
     //MARK: - IBOutlets and Actions
@@ -51,6 +52,7 @@ class ViewController: UIViewController {
     
     @IBAction func newGameButton(_ sender: UIButton) {
         newGame()
+        updateViewFromModel()
     }
 
     
@@ -75,18 +77,14 @@ class ViewController: UIViewController {
         actionButtonLabel.isEnabled = true
         actionButtonLabel.isHidden = false
         remainingCardsLabel.isHidden = false
-        cardsLastCount = 0
         game = GameOfSet()
         game.newGame()
-        updateViewFromModel()
-        playSound("cardShuffle", dot: "wav")
+        cardsLastCount = 0
     }
     
     func updateViewFromModel() {
         for index in game.cardsInPlay.indices {
-            cardButtonsLabels[index].isEnabled = true
-            cardButtonsLabels[index].backgroundColor = cardBackgroundColor
-            cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
+            showCardButton(at: index)
         }
         for index in game.indexOfOutOfPlay {
             hideCardButton(at: index)
@@ -100,6 +98,12 @@ class ViewController: UIViewController {
         cardButtonsLabels[index].isEnabled = false
         cardButtonsLabels[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
         cardButtonsLabels[index].setAttributedTitle(nil, for: .normal)
+    }
+    
+    func showCardButton(at index: Int) {
+        cardButtonsLabels[index].isEnabled = true
+        cardButtonsLabels[index].backgroundColor = cardBackgroundColor
+        cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
     }
     
     func updateActionButtonLabel() {
@@ -182,9 +186,14 @@ class ViewController: UIViewController {
             }
             cardButtonsLabels[index].layer.borderColor = highlightColor
         }
-        if game.cards.count != cardsLastCount {
-            playSound("cardSlide6", dot: "wav")
+        if game.cards.count != cardsLastCount || game.indexOfOutOfPlay.count != outOfPlayLastCount {
             cardsLastCount = game.cards.count
+            outOfPlayLastCount = game.indexOfOutOfPlay.count
+            if cardsLastCount == 69 {
+                playSound("cardShuffle", dot: "wav")
+            } else {
+                playSound("cardSlide6", dot: "wav")
+            }
         }
         hapticFeedback(called: "peek")
     }
