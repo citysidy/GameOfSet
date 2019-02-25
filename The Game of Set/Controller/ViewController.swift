@@ -230,7 +230,6 @@ class ViewController: UIViewController {
     }
     
     
-    
 }
 
 
@@ -243,14 +242,13 @@ extension Int {
         if self > 0 {
             return +Int.random(in: 0 ..< +self)
         } else
-            
         if self < 0 {
             return -Int.random(in: 0 ..< -self)
         } else
-        
         {return 0}
     }
 }
+
 
 extension Collection {
     //If the collection only contains one element, return that element, otherwise nil

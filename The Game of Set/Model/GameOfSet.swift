@@ -82,7 +82,6 @@ class GameOfSet {
     }
     
     func resetSelectedCards() {
-        
         if isASet ?? false {
             replaceSet()
             score += 3
