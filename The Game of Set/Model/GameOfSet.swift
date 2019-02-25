@@ -54,8 +54,7 @@ class GameOfSet {
     }
     
     func action() {
-        if isASet != nil {
-            resetSelectedCards()
+        if resetRequired() {
         } else {
             for _ in 1...3 {
                 if let newCard = getRandomCard() {
@@ -67,17 +66,23 @@ class GameOfSet {
     
     func cardSelected(_ cardIndex: Int) {
         if indexOfSelected.contains(cardIndex) {
-            if isASet != nil {
-                resetSelectedCards()
+            if resetRequired() {
             } else {
                 indexOfSelected.remove(at: indexOfSelected.firstIndex(of: cardIndex)!)
                 score -= 1
             }
         } else {
-            if isASet != nil {
-                resetSelectedCards()
-            }
+            if resetRequired() {}
             indexOfSelected.append(cardIndex)
+        }
+    }
+    
+    func resetRequired() -> Bool {
+        if isASet != nil {
+            resetSelectedCards()
+            return true
+        } else {
+            return false
         }
     }
     

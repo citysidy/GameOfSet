@@ -36,13 +36,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var remainingCardsLabel: UILabel!
     
-    @IBOutlet var cardButtonsLabels: [UIButton]!
-    @IBAction func cardButtons(_ sender: UIButton) {
-        if let selectedIndex = cardButtonsLabels.firstIndex(of: sender) {
-            game.cardSelected(selectedIndex)
-        }
-        updateViewFromModel()
-    }
+//    @IBOutlet var cardButtonsLabels: [UIButton]!
+//    @IBAction func cardButtons(_ sender: UIButton) {
+//        if let selectedIndex = cardButtonsLabels.firstIndex(of: sender) {
+//            game.cardSelected(selectedIndex)
+//        }
+//        updateViewFromModel()
+//    }
     
     @IBOutlet weak var actionButtonLabel: UIButton!
     @IBAction func actionButton(_ sender: UIButton) {
@@ -60,20 +60,20 @@ class ViewController: UIViewController {
     /***************************************************************/
     
     override func viewDidLoad() {
-        for button in cardButtonsLabels {
-            button.layer.cornerRadius = 5.0
-            button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-            button.isEnabled = false
-        }
+//        for button in cardButtonsLabels {
+//            button.layer.cornerRadius = 5.0
+//            button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+//            button.isEnabled = false
+//        }
         actionButtonLabel.isEnabled = false
-        actionButtonLabel.isHidden = true
+//        actionButtonLabel.isHidden = true
         remainingCardsLabel.isHidden = true
     }
     
     func newGame() {
-        for index in cardButtonsLabels.indices {
-            hideCardButton(at: index)
-        }
+//        for index in cardButtonsLabels.indices {
+//            hideCardButton(at: index)
+//        }
         actionButtonLabel.isEnabled = true
         actionButtonLabel.isHidden = false
         remainingCardsLabel.isHidden = false
@@ -83,28 +83,28 @@ class ViewController: UIViewController {
     }
     
     func updateViewFromModel() {
-        for index in game.cardsInPlay.indices {
-            showCardButton(at: index)
-        }
-        for index in game.indexOfOutOfPlay {
-            hideCardButton(at: index)
-        }
+//        for index in game.cardsInPlay.indices {
+//            showCardButton(at: index)
+//        }
+//        for index in game.indexOfOutOfPlay {
+//            hideCardButton(at: index)
+//        }
         updateActionButtonLabel()
         updateTopLabels()
         feedback()
     }
     
-    func hideCardButton(at index: Int) {
-        cardButtonsLabels[index].isEnabled = false
-        cardButtonsLabels[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-        cardButtonsLabels[index].setAttributedTitle(nil, for: .normal)
-    }
+//    func hideCardButton(at index: Int) {
+//        cardButtonsLabels[index].isEnabled = false
+//        cardButtonsLabels[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+//        cardButtonsLabels[index].setAttributedTitle(nil, for: .normal)
+//    }
     
-    func showCardButton(at index: Int) {
-        cardButtonsLabels[index].isEnabled = true
-        cardButtonsLabels[index].backgroundColor = cardBackgroundColor
-        cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
-    }
+//    func showCardButton(at index: Int) {
+//        cardButtonsLabels[index].isEnabled = true
+//        cardButtonsLabels[index].backgroundColor = cardBackgroundColor
+//        cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
+//    }
     
     func updateActionButtonLabel() {
         actionButtonLabel.isEnabled = true
@@ -126,7 +126,7 @@ class ViewController: UIViewController {
                 actionButtonLabel.setTitle("No Room", for: .normal)
                 actionButtonLabel.isEnabled = false
             } else if game.cards.count > 0 {
-                actionButtonLabel.setTitle("Add 3 Cards", for: .normal)
+                actionButtonLabel.setTitle("Add 3", for: .normal)
             }
         }
     }
@@ -167,11 +167,11 @@ class ViewController: UIViewController {
     }
     
     func feedback() {
-        for button in cardButtonsLabels {
-            button.layer.borderWidth = 0
-        }
+//        for button in cardButtonsLabels {
+//            button.layer.borderWidth = 0
+//        }
         for index in game.indexOfSelected {
-            cardButtonsLabels[index].layer.borderWidth = 3.0
+//            cardButtonsLabels[index].layer.borderWidth = 3.0
             var highlightColor = UIColor.blue.cgColor
             if let set = game.isASet {
                 if set {
@@ -184,7 +184,7 @@ class ViewController: UIViewController {
             } else {
                 playSound("beep", dot: "wav")
             }
-            cardButtonsLabels[index].layer.borderColor = highlightColor
+//            cardButtonsLabels[index].layer.borderColor = highlightColor
         }
         if game.cards.count != cardsLastCount || game.indexOfOutOfPlay.count != outOfPlayLastCount {
             cardsLastCount = game.cards.count

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE25A4462223D4D9009EE8DF /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25A4452223D4D9009EE8DF /* Grid.swift */; };
+		DE25A4482223E85A009EE8DF /* SetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25A4472223E85A009EE8DF /* SetCardView.swift */; };
 		DE4B14F6220BC4C200D4F314 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */; };
 		DE4B14F8220BC4C200D4F314 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B14F7220BC4C200D4F314 /* ViewController.swift */; };
 		DE4B14FB220BC4C200D4F314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4B14F9220BC4C200D4F314 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		DE25A4452223D4D9009EE8DF /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		DE25A4472223E85A009EE8DF /* SetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardView.swift; sourceTree = "<group>"; };
 		DE4B14F2220BC4C200D4F314 /* The Game of Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Game of Set.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE4B14F7220BC4C200D4F314 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,8 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				DE4B150D220BC88600D4F314 /* Model */,
-				DE4B1508220BC83700D4F314 /* Controller */,
 				DE4B1507220BC82A00D4F314 /* View */,
+				DE4B1508220BC83700D4F314 /* Controller */,
 				DE4B14FC220BC4C400D4F314 /* Assets.xcassets */,
 				DE4B150E220BC89000D4F314 /* Supporting Files */,
 				DE4B1501220BC4C400D4F314 /* Info.plist */,
@@ -85,6 +87,7 @@
 		DE4B1507220BC82A00D4F314 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE25A4472223E85A009EE8DF /* SetCardView.swift */,
 				DE25A4452223D4D9009EE8DF /* Grid.swift */,
 				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
 			);
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */,
+				DE25A4482223E85A009EE8DF /* SetCardView.swift in Sources */,
 				DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */,
 				DE4B14F8220BC4C200D4F314 /* ViewController.swift in Sources */,
 				DE25A4462223D4D9009EE8DF /* Grid.swift in Sources */,
