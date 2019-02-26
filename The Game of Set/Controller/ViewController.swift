@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 //            button.isEnabled = false
 //        }
         actionButtonLabel.isEnabled = false
-//        actionButtonLabel.isHidden = true
+        actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
     }
     

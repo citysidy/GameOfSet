@@ -87,9 +87,9 @@
 		DE4B1507220BC82A00D4F314 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
 				DE25A4472223E85A009EE8DF /* SetCardView.swift */,
 				DE25A4452223D4D9009EE8DF /* Grid.swift */,
-				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
