@@ -15,6 +15,10 @@ class SetCardView: UIView {
     /***************************************************************/
     
     @IBInspectable
+    var cardBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    @IBInspectable
+    var symbolBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    @IBInspectable
     var color: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
     @IBInspectable
     var shape: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
@@ -27,9 +31,13 @@ class SetCardView: UIView {
         return pips + 1
     }
     
-    private lazy var symbolMiddle: UIView = createMiddleSubView()
-    private lazy var symbolTop: UIView = createMiddleSubView()
-    private lazy var symbolBottom: UIView = createMiddleSubView()
+    private var symbolSubView: [SymbolView] = []
+    
+    private lazy var symbolMiddle: SymbolView = createSubView()
+    private lazy var symbolTop: SymbolView = createSubView()
+    private lazy var symbolBottom: SymbolView = createSubView()
+    private lazy var symbolTopHalf: SymbolView = createSubView()
+    private lazy var symbolBottomHalf: SymbolView = createSubView()
     
     
     //MARK: - IBOutlets and Actions
@@ -41,39 +49,58 @@ class SetCardView: UIView {
     //MARK: - Methods
     /***************************************************************/
     
-    private func shape0() {
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: bounds.midX, y: 0))
-    }
-    
-    private func createMiddleSubView() -> UIView {
-        let frame = bounds.middleSquare
-        let subView = UIView()
+    private func createSubView() -> SymbolView {
+        let subView = SymbolView()
+        subView.symbol = shape
+        subView.fill = fill
+        subView.color = color
         subView.frame.size = CGSize.zero
-        subView.frame = frame//.insetBy(dx: symbolSpacing, dy: symbolSpacing)
-        subView.backgroundColor = #colorLiteral(red: 0.9450980392, green: 0.6549019608, blue: 0.2039215686, alpha: 1)
+        subView.backgroundColor = symbolBackgroundColor
         return subView
     }
+    
+    private func addSubViews() {
+        switch numberOfSubViews {
+        case 2:
+            self.addSubview(symbolTopHalf)
+            self.addSubview(symbolBottomHalf)
+        case 3:
+            self.addSubview(symbolTop)
+            self.addSubview(symbolBottom)
+            fallthrough
+        default:
+            self.addSubview(symbolMiddle)
+        }
+    }
+    
+    private func configureSubView(_ view: UIView) {
+        view.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).middleSquare.insetBy(dx: symbolSpacing, dy: symbolSpacing)
+    }
+    
     
     //MARK: - Overrides
     /***************************************************************/
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        configureSubView(symbolMiddle)
+        configureSubView(symbolTop)
+        configureSubView(symbolBottom)
+        configureSubView(symbolTopHalf)
+        configureSubView(symbolBottomHalf)
         symbolMiddle.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        symbolTop.center = CGPoint(x: bounds.topThird.midX, y: bounds.topThird.midY)
-        symbolBottom.center = CGPoint(x: bounds.bottomThird.midX, y: bounds.bottomThird.midY)
+        symbolTop.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midY)
+        symbolBottom.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midY)
+        symbolTopHalf.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midY)
+        symbolBottomHalf.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midY)
     }
     
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
         roundedRect.addClip()
-        UIColor.white.setFill()
+        cardBackgroundColor.setFill()
         roundedRect.fill()
-        //symbolFrames[0] = UIView(frame: bounds.middleSquare)
-        self.addSubview(symbolMiddle)
-        self.addSubview(symbolTop)
-        self.addSubview(symbolBottom)
+        addSubViews()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -93,7 +120,7 @@ extension SetCardView {
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
-        static let symbolOffsetToBoundsHeight: CGFloat = 0.01
+        static let symbolOffsetToBoundsHeight: CGFloat = 0.02
     }
     
     private var cornerRadius: CGFloat {
@@ -116,28 +143,44 @@ extension CGRect {
         var side: CGFloat
         if maxY > maxX {
             side = height/3
-            
+            print("Portrait")
         } else {
             side = width/3
-            
+            print("Landscape")
         }
         return CGRect(x: minX, y: minY, width: side, height: side)
     }
     
     var topThird: CGRect {
-        return CGRect(x: minX, y: minY, width: width, height: height/3)
+        if maxY > maxX {
+            return CGRect(x: minX, y: minY, width: width, height: height/3)
+        } else {
+            return CGRect(x: minX, y: minY, width: width/3, height: height)
+        }
     }
     
     var bottomThird: CGRect {
-        return CGRect(x: minX, y: maxY-height/3, width: width, height: height/3)
+        if maxY > maxX {
+            return CGRect(x: minX, y: maxY-height/3, width: width, height: height/3)
+        } else {
+            return CGRect(x: maxX-width/3, y: minY, width: width/3, height: height)
+        }
     }
     
     var topOffsetHalf: CGRect {
-        return CGRect(x: minX, y: minY+height/6, width: width, height: height/3)
+        if maxY > maxX {
+            return CGRect(x: minX, y: midY-height/3, width: width, height: height/3)
+        } else {
+            return CGRect(x: midX-width/3, y: minY, width: width/3, height: height)
+        }
     }
     
     var bottomOffsetHalf: CGRect {
-        return CGRect(x: minX, y: midY, width: width, height: height/3)
+        if maxY > maxX {
+            return CGRect(x: minX, y: midY, width: width, height: height/3)
+        } else {
+            return CGRect(x: midX, y: minY, width: width/3, height: height)
+        }
     }
     
     func inset(by size: CGSize) -> CGRect {
