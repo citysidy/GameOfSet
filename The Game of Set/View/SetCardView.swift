@@ -54,7 +54,7 @@ class SetCardView: UIView {
         subView.symbol = shape
         subView.fill = fill
         subView.color = color
-        subView.frame.size = CGSize.zero
+        //subView.frame.size = CGSize.zero
         subView.backgroundColor = symbolBackgroundColor
         return subView
     }
@@ -74,7 +74,7 @@ class SetCardView: UIView {
     }
     
     private func configureSubView(_ view: UIView) {
-        view.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).middleSquare.insetBy(dx: symbolSpacing, dy: symbolSpacing)
+        view.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
     }
     
     
@@ -97,10 +97,10 @@ class SetCardView: UIView {
     
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
-        roundedRect.addClip()
         cardBackgroundColor.setFill()
         roundedRect.fill()
         addSubViews()
+        roundedRect.addClip()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -120,7 +120,7 @@ extension SetCardView {
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
-        static let symbolOffsetToBoundsHeight: CGFloat = 0.02
+        static let symbolOffsetToBoundsHeight: CGFloat = 0.01
     }
     
     private var cornerRadius: CGFloat {
@@ -132,22 +132,18 @@ extension SetCardView {
     }
     
     private var symbolSpacing: CGFloat {
-        return bounds.size.height * SizeRatio.symbolOffsetToBoundsHeight
+        let side = max(bounds.maxX, bounds.maxY)
+        return side * SizeRatio.symbolOffsetToBoundsHeight
     }
     
 }
 
 extension CGRect {
     
-    var middleSquare: CGRect {
-        var side: CGFloat
-        if maxY > maxX {
-            side = height/3
-            print("Portrait")
-        } else {
-            side = width/3
-            print("Landscape")
-        }
+    var thirds: CGRect {
+        let width = min(maxX, maxY)
+        let height = max(maxX, maxY) / 3
+        let side = min(width, height)
         return CGRect(x: minX, y: minY, width: side, height: side)
     }
     

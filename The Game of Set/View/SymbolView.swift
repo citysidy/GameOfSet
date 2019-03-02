@@ -15,25 +15,18 @@ import UIKit
     var symbol: Int = 0
     var fill: Int = 0
     var strokeWidth: CGFloat = 10
+    var path = UIBezierPath()
     
     private func triangle() {
-        let path = UIBezierPath()
         let height = ((sqrt(3.0)/2) * bounds.maxX) - (strokeWidth * 2)
         let yOffset = (bounds.maxY - height)/2
         path.move(to: CGPoint(x: bounds.midX, y: yOffset))
         path.addLine(to: CGPoint(x: bounds.maxX - strokeWidth, y: bounds.maxY-yOffset))
         path.addLine(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.maxY-yOffset))
         path.close()
-        //path.addClip()
-        path.lineWidth = strokeWidth
-        UIColor.black.setStroke()
-        path.stroke()
-        UIColor.gray.setFill()
-        path.fill()
     }
     
     private func diamond() {
-        let path = UIBezierPath()
         let height = ((sqrt(3.0)/6) * bounds.maxX) - (strokeWidth)
         let yOffset = bounds.maxY / 2 - height
         path.move(to: CGPoint(x: bounds.midX, y: bounds.minY + yOffset))
@@ -41,45 +34,25 @@ import UIKit
         path.addLine(to: CGPoint(x: bounds.midX, y: bounds.maxY - yOffset))
         path.addLine(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.midY))
         path.close()
-        //path.addClip()
-        path.lineWidth = strokeWidth
-        UIColor.black.setStroke()
-        path.stroke()
-        UIColor.gray.setFill()
-        path.fill()
     }
     
     private func circle() {
         let radius = ((sqrt(3.0)/4) * bounds.maxX) - (strokeWidth)
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        let path = UIBezierPath()
         path.addArc(withCenter: center, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
-        path.lineWidth = strokeWidth
-        UIColor.black.setStroke()
-        path.stroke()
-        UIColor.gray.setFill()
-        path.fill()
     }
     
     private func oval() {
-        let radius = ((sqrt(3.0)/6) * bounds.maxX) - (strokeWidth)
+        let radius = ((sqrt(3.0)/6.2) * bounds.maxX) - (strokeWidth)
         let center1 = CGPoint(x: bounds.midX - radius, y: bounds.midY)
         let center2 = CGPoint(x: bounds.midX + radius, y: bounds.midY)
-        let path = UIBezierPath()
         path.addArc(withCenter: center1, radius: radius, startAngle: .pi / 2, endAngle: .pi * 3 / 2, clockwise: true)
         path.addLine(to: CGPoint(x: bounds.midX + radius, y: bounds.midY - radius))
         path.addArc(withCenter: center2, radius: radius, startAngle: .pi * 3 / 2, endAngle: .pi / 2, clockwise: true)
         path.close()
-        path.lineWidth = strokeWidth
-        UIColor.black.setStroke()
-        path.stroke()
-        UIColor.gray.setFill()
-        path.fill()
     }
     
     private func wave() {
-        let path = UIBezierPath()
-        //var firstPoint: CGPoint = CGPointZero
         let radius = ((sqrt(3.0)/4) * bounds.maxX) - (strokeWidth)
         let controlPoint1 = CGPoint(x: bounds.midX / 7, y: bounds.midY / 2.2)
         let controlPoint2 = CGPoint(x: bounds.midX * 1.3, y: bounds.midY / 1.15)
@@ -94,11 +67,35 @@ import UIKit
         path.addQuadCurve(to: CGPoint(x: bounds.midX, y: bounds.midY + radius / 3), controlPoint: controlPoint4)
         path.addQuadCurve(to: CGPoint(x: bounds.midX - radius / 1.5, y: bounds.midY + radius / 2), controlPoint: controlPoint5)
         path.addQuadCurve(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.midY), controlPoint: controlPoint6)
+        path.close()
         path.lineWidth = strokeWidth
-        UIColor.black.setStroke()
+    }
+    
+    private func stripeFill() {
+        let stripe = UIBezierPath()
+        for x in stride(from: bounds.minX, to: bounds.maxX, by: 10) {
+            stripe.move(to: CGPoint(x: CGFloat(x), y: bounds.minY))
+            stripe.addLine(to: CGPoint(x: CGFloat(x), y: bounds.maxY))
+        }
+        stripe.lineWidth = strokeWidth / 3
+        stripe.stroke()
+    }
+    
+    private func configureSymbol() {
+        path.lineWidth = strokeWidth
+        let color = symbolColors[self.color]
+        color.setStroke()
         path.stroke()
-        UIColor.gray.setFill()
-        path.fill()
+        path.addClip()
+        switch fill {
+        case 1:
+            stripeFill()
+        case 2:
+            color.setFill()
+            path.fill()
+        default:
+            break
+        }
     }
     
     override func draw(_ rect: CGRect) {
@@ -110,6 +107,7 @@ import UIKit
         default:
             wave()
         }
+        configureSymbol()
     }
     
     
