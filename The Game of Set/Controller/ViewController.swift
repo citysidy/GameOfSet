@@ -11,7 +11,6 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
-    //TODO: Card size shouldn't change if there are no 3 (or 2) pip cards
     //TODO: Count sets in play.
     //TODO: Add a sensible extension to some data structure.
     //TODO: Animations and delays.
@@ -19,38 +18,30 @@ class ViewController: UIViewController {
     //MARK: - Properties
     /***************************************************************/
     
-    var game = GameOfSet()
+    private let cardSpacingColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    private let symbolSize: CGFloat = 20
     
-    let cardBackgroundColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
-    let symbolColors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
-    let symbolShapes = ["▲", "●", "■"]
-    let symbolSize: CGFloat = 20
-    
-    var cardsLastCount = 0
-    var outOfPlayLastCount = 0
+    private var game = GameOfSet()
+    private var grid = Grid(layout: .dimensions(rowCount: 4, columnCount: 3))
+    private var cards: [SetCardView] = []
+    private var playArea = CGRect.zero
+    private var cardsLastCount = 0
+    private var outOfPlayLastCount = 0
     
     
     //MARK: - IBOutlets and Actions
     /***************************************************************/
     
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var remainingCardsLabel: UILabel!
+    @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private weak var remainingCardsLabel: UILabel!
     
-//    @IBOutlet var cardButtonsLabels: [UIButton]!
-//    @IBAction func cardButtons(_ sender: UIButton) {
-//        if let selectedIndex = cardButtonsLabels.firstIndex(of: sender) {
-//            game.cardSelected(selectedIndex)
-//        }
-//        updateViewFromModel()
-//    }
-    
-    @IBOutlet weak var actionButtonLabel: UIButton!
-    @IBAction func actionButton(_ sender: UIButton) {
+    @IBOutlet private weak var actionButtonLabel: UIButton!
+    @IBAction private func actionButton(_ sender: UIButton) {
         game.action()
         updateViewFromModel()
     }
     
-    @IBAction func newGameButton(_ sender: UIButton) {
+    @IBAction private func newGameButton(_ sender: UIButton) {
         newGame()
         updateViewFromModel()
     }
@@ -60,53 +51,49 @@ class ViewController: UIViewController {
     /***************************************************************/
     
     override func viewDidLoad() {
-//        for button in cardButtonsLabels {
-//            button.layer.cornerRadius = 5.0
-//            button.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-//            button.isEnabled = false
-//        }
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
     }
     
-    func newGame() {
-//        for index in cardButtonsLabels.indices {
-//            hideCardButton(at: index)
-//        }
+    private func newGame() {
         actionButtonLabel.isEnabled = true
         actionButtonLabel.isHidden = false
         remainingCardsLabel.isHidden = false
+        
+        cards = []
+        cardsLastCount = 0
         game = GameOfSet()
         game.newGame()
-        cardsLastCount = 0
+        
+        view.subviews.filter{ $0 is SetCardView }.forEach({ $0.removeFromSuperview() })
+        if let viewArea = self.view.subviews.last {
+            grid.frame = viewArea.frame
+            grid.layout = .dimensions(rowCount: 4, columnCount: 3)
+        }
+        updateViewFromModel()
     }
     
-    func updateViewFromModel() {
-//        for index in game.cardsInPlay.indices {
-//            showCardButton(at: index)
-//        }
-//        for index in game.indexOfOutOfPlay {
-//            hideCardButton(at: index)
-//        }
+    private func updateViewFromModel() {
+        getCards()
         updateActionButtonLabel()
         updateTopLabels()
         feedback()
     }
     
-//    func hideCardButton(at index: Int) {
-//        cardButtonsLabels[index].isEnabled = false
-//        cardButtonsLabels[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-//        cardButtonsLabels[index].setAttributedTitle(nil, for: .normal)
-//    }
+    private func getCards() {
+        for index in game.cardsInPlay.indices {
+            let card = game.cardsInPlay[index]
+            if let frame = grid[index] {
+                let cardView = SetCardView(card: card, frame: frame)
+                cardView.backgroundColor = cardSpacingColor
+                cards.append(cardView)
+            }
+            self.view.addSubview(cards[index])
+        }
+    }
     
-//    func showCardButton(at index: Int) {
-//        cardButtonsLabels[index].isEnabled = true
-//        cardButtonsLabels[index].backgroundColor = cardBackgroundColor
-//        cardButtonsLabels[index].setAttributedTitle(getCardTitle(of: game.cardsInPlay[index]), for: .normal)
-//    }
-    
-    func updateActionButtonLabel() {
+    private func updateActionButtonLabel() {
         actionButtonLabel.isEnabled = true
         if game.isASet != nil {
             if game.isASet! {
@@ -131,7 +118,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateTopLabels() {
+    private func updateTopLabels() {
         remainingCardsLabel.text = "Cards Remaining: \(game.cards.count)"
         if game.testMode {
             scoreLabel.text = "TEST MODE"
@@ -140,45 +127,16 @@ class ViewController: UIViewController {
         }
     }
     
-    func getCardTitle(of card: SetCard) -> NSAttributedString {
-        var attributes: [NSAttributedString.Key : Any] = [:]
-        var color = symbolColors[card.color.rawValue]
-        var shape = symbolShapes[card.shape.rawValue]
-        switch card.fill.rawValue {
-        case 0:
-            attributes[.strokeWidth] = 10
-        case 1:
-            color = color.withAlphaComponent(0.40)
-            fallthrough
-        default:
-            attributes[.foregroundColor] = color
-        }
-        attributes[.strokeColor] = color
-        attributes[.font] = UIFont.systemFont(ofSize: symbolSize)
-        switch card.pips.rawValue {
-        case 0:
-            break
-        case 1:
-            shape = shape + "\n" + shape
-        default:
-            shape = shape + "\n" + shape + "\n" + shape
-        }
-        return NSAttributedString(string: shape, attributes: attributes)
-    }
-    
-    func feedback() {
+    private func feedback() {
 //        for button in cardButtonsLabels {
 //            button.layer.borderWidth = 0
 //        }
-        for index in game.indexOfSelected {
+        for _ in game.indexOfSelected {
 //            cardButtonsLabels[index].layer.borderWidth = 3.0
-            var highlightColor = UIColor.blue.cgColor
             if let set = game.isASet {
                 if set {
-                    highlightColor = UIColor.green.cgColor
                     playSound("ding", dot: "wav")
                 } else {
-                    highlightColor = UIColor.red.cgColor
                     playSound("error", dot: "wav")
                 }
             } else {
@@ -246,14 +204,6 @@ extension Int {
             return -Int.random(in: 0 ..< -self)
         } else
         {return 0}
-    }
-}
-
-
-extension Collection {
-    //If the collection only contains one element, return that element, otherwise nil
-    var oneAndOnly: Element? {
-        return count == 1 ? first : nil
     }
 }
 

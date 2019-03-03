@@ -8,12 +8,12 @@
 
 import UIKit
 
-@IBDesignable class SymbolView: UIView {
+class SymbolView: UIView {
     
     private let symbolColors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
-    var color: Int = 0
+    var colorIndex: Int = 0
     var symbol: Int = 0
-    var fill: Int = 0
+    var symbolFill: Int = 0
     var strokeWidth: CGFloat = 10
     var path = UIBezierPath()
     
@@ -83,15 +83,15 @@ import UIKit
     
     private func configureSymbol() {
         path.lineWidth = strokeWidth
-        let color = symbolColors[self.color]
-        color.setStroke()
+        let symbolColor = symbolColors[colorIndex]
+        symbolColor.setStroke()
         path.stroke()
         path.addClip()
-        switch fill {
+        switch symbolFill {
         case 1:
             stripeFill()
         case 2:
-            color.setFill()
+            symbolColor.setFill()
             path.fill()
         default:
             break

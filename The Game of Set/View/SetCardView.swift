@@ -14,67 +14,42 @@ class SetCardView: UIView {
     //MARK: - Properties
     /***************************************************************/
     
-    @IBInspectable
-    var cardBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    @IBInspectable
-    var symbolBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    @IBInspectable
-    var color: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    @IBInspectable
-    var shape: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    @IBInspectable
-    var fill: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    @IBInspectable
-    var pips: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
+    private let cardBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    private let symbolBackgroundColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     
-    private var numberOfSubViews: Int {
-        return pips + 1
-    }
+    var setCard: SetCard
+    var cardPips: Int
+    var cardFrame: CGRect = CGRect.zero {didSet {setNeedsDisplay(); setNeedsLayout()}}
     
     private var symbolSubView: [SymbolView] = []
-    
-    private lazy var symbolMiddle: SymbolView = createSubView()
-    private lazy var symbolTop: SymbolView = createSubView()
-    private lazy var symbolBottom: SymbolView = createSubView()
-    private lazy var symbolTopHalf: SymbolView = createSubView()
-    private lazy var symbolBottomHalf: SymbolView = createSubView()
     
     
     //MARK: - IBOutlets and Actions
     /***************************************************************/
     
+    init(card: SetCard, frame: CGRect) {
+        cardFrame = frame
+        setCard = card
+        cardPips = card.pips.rawValue
+        super.init(frame: frame)
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     //MARK: - Methods
     /***************************************************************/
     
-    private func createSubView() -> SymbolView {
-        let subView = SymbolView()
-        subView.symbol = shape
-        subView.fill = fill
-        subView.color = color
-        //subView.frame.size = CGSize.zero
-        subView.backgroundColor = symbolBackgroundColor
-        return subView
-    }
-    
     private func addSubViews() {
-        switch numberOfSubViews {
-        case 2:
-            self.addSubview(symbolTopHalf)
-            self.addSubview(symbolBottomHalf)
-        case 3:
-            self.addSubview(symbolTop)
-            self.addSubview(symbolBottom)
-            fallthrough
-        default:
-            self.addSubview(symbolMiddle)
+        for index in 0...cardPips {
+            let symbolView = SymbolView()
+            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
+            symbolView.backgroundColor = symbolBackgroundColor
+            symbolSubView.append(symbolView)
+            self.addSubview(symbolSubView[index])
         }
-    }
-    
-    private func configureSubView(_ view: UIView) {
-        view.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
     }
     
     
@@ -83,16 +58,18 @@ class SetCardView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        configureSubView(symbolMiddle)
-        configureSubView(symbolTop)
-        configureSubView(symbolBottom)
-        configureSubView(symbolTopHalf)
-        configureSubView(symbolBottomHalf)
-        symbolMiddle.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        symbolTop.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midY)
-        symbolBottom.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midY)
-        symbolTopHalf.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midY)
-        symbolBottomHalf.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midY)
+        switch symbolSubView.count {
+        case 2:
+            symbolSubView.first?.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midY)
+            symbolSubView.last?.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midY)
+        case 3:
+            symbolSubView[1].center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midY)
+            symbolSubView.last?.center =  CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midY)
+            fallthrough
+        case 1:
+            symbolSubView.first?.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        default: break
+        }
     }
     
     override func draw(_ rect: CGRect) {
@@ -137,6 +114,7 @@ extension SetCardView {
     }
     
 }
+
 
 extension CGRect {
     
