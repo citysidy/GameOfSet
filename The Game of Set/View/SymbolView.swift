@@ -10,12 +10,22 @@ import UIKit
 
 class SymbolView: UIView {
     
+    
+    //MARK: - Properties
+    /***************************************************************/
+    
     private let symbolColors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
+    private let strokeWidth: CGFloat = 10
+    
+    private var path = UIBezierPath()
+    
     var colorIndex: Int = 0
     var symbol: Int = 0
     var symbolFill: Int = 0
-    var strokeWidth: CGFloat = 10
-    var path = UIBezierPath()
+    
+    
+    //MARK: - Methods
+    /***************************************************************/
     
     private func triangle() {
         let height = ((sqrt(3.0)/2) * bounds.maxX) - (strokeWidth * 2)
@@ -97,6 +107,10 @@ class SymbolView: UIView {
             break
         }
     }
+    
+    
+    //MARK: - Overrides
+    /***************************************************************/
     
     override func draw(_ rect: CGRect) {
         switch symbol {

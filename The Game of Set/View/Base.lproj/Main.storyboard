@@ -54,6 +54,9 @@
                                         <rect key="frame" x="290.66666666666669" y="0.0" width="91.333333333333314" height="42"/>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
                                         <state key="normal" title="Settings"/>
+                                        <connections>
+                                            <action selector="settingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PSe-K0-ifS"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -63,22 +66,8 @@
                                     <constraint firstItem="ZU4-65-ELi" firstAttribute="width" secondItem="DGb-hA-Zqm" secondAttribute="width" id="jPE-6L-gLQ"/>
                                 </constraints>
                             </stackView>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
+                            <view opaque="NO" tag="1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
                                 <rect key="frame" x="16" y="108" width="378" height="710"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="pips">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shape">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="fill">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="color">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

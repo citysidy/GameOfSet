@@ -12,21 +12,18 @@ import AVFoundation
 class ViewController: UIViewController {
 
     //TODO: Count sets in play.
-    //TODO: Add a sensible extension to some data structure.
     //TODO: Animations and delays.
 
     //MARK: - Properties
     /***************************************************************/
     
     private let cardSpacingColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-    private let symbolSize: CGFloat = 20
     
     private var game = GameOfSet()
-    private var grid = Grid(layout: .dimensions(rowCount: 4, columnCount: 3))
-    private var cards: [SetCardView] = []
-    private var playArea = CGRect.zero
-    private var cardsLastCount = 0
-    private var outOfPlayLastCount = 0
+    private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
+    private var cardsOnBoard: [SetCardView] = []
+    private var remainingCount = 0
+    private var outOfPlayCount = 0
     
     
     //MARK: - IBOutlets and Actions
@@ -46,6 +43,12 @@ class ViewController: UIViewController {
         updateViewFromModel()
     }
 
+    @IBAction private func settingsButton(_ sender: UIButton) {
+        if let viewArea = view.viewWithTag(1) {
+            print("\nViewAea:\nWidth:\(viewArea.frame.size.width) - Height:\(viewArea.frame.size.height)\n")
+            viewArea.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        }
+    }
     
     //MARK: - Methods
     /***************************************************************/
@@ -60,36 +63,54 @@ class ViewController: UIViewController {
         actionButtonLabel.isEnabled = true
         actionButtonLabel.isHidden = false
         remainingCardsLabel.isHidden = false
-        
-        cards = []
-        cardsLastCount = 0
+    
+        remainingCount = 0
         game = GameOfSet()
         game.newGame()
         
-        view.subviews.filter{ $0 is SetCardView }.forEach({ $0.removeFromSuperview() })
-        if let viewArea = self.view.subviews.last {
-            grid.frame = viewArea.frame
-            grid.layout = .dimensions(rowCount: 4, columnCount: 3)
-        }
         updateViewFromModel()
     }
     
     private func updateViewFromModel() {
-        getCards()
+        drawCardsOnBoard()
         updateActionButtonLabel()
         updateTopLabels()
         feedback()
     }
     
-    private func getCards() {
+    private func drawCardsOnBoard() {
+        removeExistingCardsFromBoard()
+        grid.layout = calculateGridLayout()
+        if let viewArea = view.viewWithTag(1) {
+            grid.frame = viewArea.frame
+            viewArea.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        }
         for index in game.cardsInPlay.indices {
             let card = game.cardsInPlay[index]
             if let frame = grid[index] {
                 let cardView = SetCardView(card: card, frame: frame)
                 cardView.backgroundColor = cardSpacingColor
-                cards.append(cardView)
+                cardsOnBoard.append(cardView)
             }
-            self.view.addSubview(cards[index])
+            view.addSubview(cardsOnBoard[index])
+        }
+    }
+    
+    private func removeExistingCardsFromBoard() {
+        cardsOnBoard = []
+        view.subviews.filter{ $0 is SetCardView }.forEach({ $0.removeFromSuperview() })
+    }
+    
+    private func calculateGridLayout() -> Grid.Layout {
+        guard game.cardsInPlay.count > 0 else {return .dimensions(rowCount: 1, columnCount: 1)}
+        let count = game.cardsInPlay.count
+        let longSide = count.isqrt
+        let shortSide = (count + longSide - 1) / longSide
+        switch UIDevice.current.orientation {
+        case .portrait:
+            return .dimensions(rowCount: shortSide, columnCount: longSide)
+        default:
+            return .dimensions(rowCount: longSide, columnCount: shortSide)
         }
     }
     
@@ -109,10 +130,7 @@ class ViewController: UIViewController {
             if game.cards.count == 0 {
                 actionButtonLabel.setTitle("No Cards Left", for: .normal)
                 actionButtonLabel.isEnabled = false
-            } else if game.cardsInPlay.count == 24 {
-                actionButtonLabel.setTitle("No Room", for: .normal)
-                actionButtonLabel.isEnabled = false
-            } else if game.cards.count > 0 {
+            } else {
                 actionButtonLabel.setTitle("Add 3", for: .normal)
             }
         }
@@ -144,16 +162,32 @@ class ViewController: UIViewController {
             }
 //            cardButtonsLabels[index].layer.borderColor = highlightColor
         }
-        if game.cards.count != cardsLastCount || game.indexOfOutOfPlay.count != outOfPlayLastCount {
-            cardsLastCount = game.cards.count
-            outOfPlayLastCount = game.indexOfOutOfPlay.count
-            if cardsLastCount == 69 {
+        if game.cards.count != remainingCount || game.indexOfOutOfPlay.count != outOfPlayCount {
+            remainingCount = game.cards.count
+            outOfPlayCount = game.indexOfOutOfPlay.count
+            if game.cards.count == 69 {
                 playSound("cardShuffle", dot: "wav")
             } else {
                 playSound("cardSlide6", dot: "wav")
             }
         }
         hapticFeedback(called: "peek")
+    }
+    
+    
+    //MARK: - Overrides
+    /***************************************************************/
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        print("Width:\(view.viewWithTag(1)?.frame.size.width) - Height:\(view.viewWithTag(1)?.frame.size.height)")
+        if traitCollection.horizontalSizeClass == .compact {
+            // load slim view
+            print("Compact")
+        } else {
+            // load wide view
+            print("Wide")
+        }
     }
     
     
@@ -205,5 +239,14 @@ extension Int {
         } else
         {return 0}
     }
+    
+    var isqrt: Int {
+        if self > 0 {
+            return Int(Double(self).squareRoot())
+        } else
+        {return 1}
+    }
+    
+    
 }
 
