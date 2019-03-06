@@ -20,11 +20,12 @@ class SetCardView: UIView {
     var setCard: SetCard
     var cardPips: Int
     var cardFrame: CGRect = CGRect.zero {didSet {setNeedsDisplay(); setNeedsLayout()}}
+    var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) {didSet {setNeedsDisplay(); setNeedsLayout()}}
     
     private var symbolSubView: [SymbolView] = []
     
     
-    //MARK: - IBOutlets and Actions
+    //MARK: - Init IBOutlets Actions
     /***************************************************************/
     
     init(card: SetCard, frame: CGRect) {
@@ -38,6 +39,7 @@ class SetCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+
     
     //MARK: - Methods
     /***************************************************************/
@@ -75,6 +77,9 @@ class SetCardView: UIView {
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
         cardBackgroundColor.setFill()
+        highlightColor.setStroke()
+        roundedRect.lineWidth = strokeWidth
+        roundedRect.stroke()
         roundedRect.fill()
         addSubViews()
         roundedRect.addClip()
@@ -98,6 +103,11 @@ extension SetCardView {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
         static let symbolOffsetToBoundsHeight: CGFloat = 0.01
+        static let highlightToBoundsHeight: CGFloat = 0.05
+    }
+    
+    private var strokeWidth: CGFloat {
+        return bounds.size.height * SizeRatio.highlightToBoundsHeight
     }
     
     private var cornerRadius: CGFloat {

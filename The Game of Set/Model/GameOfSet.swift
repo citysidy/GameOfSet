@@ -15,7 +15,7 @@ class GameOfSet {
     private(set) var cards = [SetCard]()
     private(set) var score = 0
     private(set) var cardsInPlay: [SetCard] = []
-    private(set) var indexOfOutOfPlay: [Int] = []
+    private(set) var cardsOutOfPlay: [SetCard] = []
     private(set) var indexOfSelected: [Int] = []
     
     var isASet: Bool? {
@@ -97,11 +97,14 @@ class GameOfSet {
     }
     
     func replaceSet() {
-        for item in indexOfSelected {
+        print("\nReplace Set")
+        print(indexOfSelected)
+        print(indexOfSelected.sorted(by: >))
+        for item in indexOfSelected.sorted(by: >) {
             if let newCard = getRandomCard() {
                 cardsInPlay[item] = newCard
             } else {
-                indexOfOutOfPlay.append(item)
+                cardsOutOfPlay.append(cardsInPlay.remove(at: item))
             }
         }
     }
@@ -109,7 +112,7 @@ class GameOfSet {
     func newGame() {
         resetSelectedCards()
         score = 0
-        indexOfOutOfPlay = []
+        cardsOutOfPlay = []
         for _ in 1...4 {action()}
     }
     

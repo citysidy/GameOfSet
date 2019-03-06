@@ -66,8 +66,12 @@
                                     <constraint firstItem="ZU4-65-ELi" firstAttribute="width" secondItem="DGb-hA-Zqm" secondAttribute="width" id="jPE-6L-gLQ"/>
                                 </constraints>
                             </stackView>
-                            <view opaque="NO" tag="1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
+                            <view opaque="NO" tag="-1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
                                 <rect key="frame" x="16" y="108" width="378" height="710"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="r1U-4p-Y4B" appends="YES" id="Z6m-Hf-RTZ"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -94,6 +98,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="r1U-4p-Y4B">
+                    <connections>
+                        <action selector="selectCard:" destination="BYZ-38-t0r" id="NNq-tP-bZY"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>

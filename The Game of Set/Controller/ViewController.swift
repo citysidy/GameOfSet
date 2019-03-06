@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
     //TODO: Count sets in play.
     //TODO: Animations and delays.
@@ -18,12 +18,22 @@ class ViewController: UIViewController {
     /***************************************************************/
     
     private let cardSpacingColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    private let selectedColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+    private let setColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+    private let noSetColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
     
     private var game = GameOfSet()
     private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
     private var cardsOnBoard: [SetCardView] = []
     private var remainingCount = 0
     private var outOfPlayCount = 0
+    private var selectedTag = 0 {
+        didSet {
+            print("\nCard Selected: \(selectedTag)")
+            game.cardSelected(selectedTag)
+            updateViewFromModel()
+        }
+    }
     
     
     //MARK: - IBOutlets and Actions
@@ -44,20 +54,24 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func settingsButton(_ sender: UIButton) {
-        if let viewArea = view.viewWithTag(1) {
-            print("\nViewAea:\nWidth:\(viewArea.frame.size.width) - Height:\(viewArea.frame.size.height)\n")
-            viewArea.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        updateViewFromModel()
+    }
+    
+    @IBAction func selectCard(_ sender: UITapGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            if game.cardsInPlay.count == 0 {
+                newGame()
+            }
+            updateViewFromModel()
+        default:
+            break
         }
     }
     
+    
     //MARK: - Methods
     /***************************************************************/
-    
-    override func viewDidLoad() {
-        actionButtonLabel.isEnabled = false
-        actionButtonLabel.setTitle("", for: .normal)
-        remainingCardsLabel.isHidden = true
-    }
     
     private func newGame() {
         actionButtonLabel.isEnabled = true
@@ -72,28 +86,13 @@ class ViewController: UIViewController {
     }
     
     private func updateViewFromModel() {
+        removeExistingCardsFromBoard()
+        calculateGridLayout()
+        calculateGridFrame()
         drawCardsOnBoard()
         updateActionButtonLabel()
         updateTopLabels()
         feedback()
-    }
-    
-    private func drawCardsOnBoard() {
-        removeExistingCardsFromBoard()
-        grid.layout = calculateGridLayout()
-        if let viewArea = view.viewWithTag(1) {
-            grid.frame = viewArea.frame
-            viewArea.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        }
-        for index in game.cardsInPlay.indices {
-            let card = game.cardsInPlay[index]
-            if let frame = grid[index] {
-                let cardView = SetCardView(card: card, frame: frame)
-                cardView.backgroundColor = cardSpacingColor
-                cardsOnBoard.append(cardView)
-            }
-            view.addSubview(cardsOnBoard[index])
-        }
     }
     
     private func removeExistingCardsFromBoard() {
@@ -101,16 +100,61 @@ class ViewController: UIViewController {
         view.subviews.filter{ $0 is SetCardView }.forEach({ $0.removeFromSuperview() })
     }
     
-    private func calculateGridLayout() -> Grid.Layout {
-        guard game.cardsInPlay.count > 0 else {return .dimensions(rowCount: 1, columnCount: 1)}
+    private func calculateGridLayout() {
         let count = game.cardsInPlay.count
+        if count == 0 {return}
         let longSide = count.isqrt
         let shortSide = (count + longSide - 1) / longSide
         switch UIDevice.current.orientation {
         case .portrait:
-            return .dimensions(rowCount: shortSide, columnCount: longSide)
+            grid.layout = .dimensions(rowCount: shortSide, columnCount: longSide)
         default:
-            return .dimensions(rowCount: longSide, columnCount: shortSide)
+            grid.layout = .dimensions(rowCount: longSide, columnCount: shortSide)
+        }
+    }
+    
+    private func calculateGridFrame() {
+        if let viewArea = view.viewWithTag(-1) {
+            grid.frame = viewArea.frame
+            viewArea.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        }
+    }
+    
+    private func drawCardsOnBoard() {
+        for index in game.cardsInPlay.indices {
+            let card = game.cardsInPlay[index]
+            if let frame = grid[index] {
+                let cardView = SetCardView(card: card, frame: frame)
+                cardView.backgroundColor = cardSpacingColor
+                cardsOnBoard.append(cardView)
+            }
+            if game.indexOfSelected.contains(index) {
+                var color = selectedColor
+                if game.isASet != nil {
+                    if game.isASet! {
+                        color = setColor
+                    } else {
+                        color = noSetColor
+                    }
+                }
+                cardsOnBoard[index].highlightColor = color
+            }
+            view.addSubview(cardsOnBoard[index])
+            cardsOnBoard[index].tag = index + 1
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gestureRecognizer:)))
+            gestureRecognizer.delegate = self
+            cardsOnBoard[index].addGestureRecognizer(gestureRecognizer)
+        }
+    }
+    
+    @objc private func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+        let view = gestureRecognizer.view
+        let loc = gestureRecognizer.location(in: view)
+        if let cardView = view {
+            let sub = cardView.hitTest(loc, with: nil)
+            let subTag = sub!.tag
+            let symTag = sub!.superview!.tag
+            selectedTag = subTag + symTag - 1
         }
     }
     
@@ -146,11 +190,15 @@ class ViewController: UIViewController {
     }
     
     private func feedback() {
-//        for button in cardButtonsLabels {
-//            button.layer.borderWidth = 0
-//        }
-        for _ in game.indexOfSelected {
-//            cardButtonsLabels[index].layer.borderWidth = 3.0
+        if game.cards.count != remainingCount || game.cardsOutOfPlay.count != outOfPlayCount {
+            remainingCount = game.cards.count
+            outOfPlayCount = game.cardsOutOfPlay.count
+            if game.cards.count == 69 {
+                playSound("cardShuffle", dot: "wav")
+            } else {
+                playSound("cardSlide6", dot: "wav")
+            }
+        } else {
             if let set = game.isASet {
                 if set {
                     playSound("ding", dot: "wav")
@@ -160,16 +208,6 @@ class ViewController: UIViewController {
             } else {
                 playSound("beep", dot: "wav")
             }
-//            cardButtonsLabels[index].layer.borderColor = highlightColor
-        }
-        if game.cards.count != remainingCount || game.indexOfOutOfPlay.count != outOfPlayCount {
-            remainingCount = game.cards.count
-            outOfPlayCount = game.indexOfOutOfPlay.count
-            if game.cards.count == 69 {
-                playSound("cardShuffle", dot: "wav")
-            } else {
-                playSound("cardSlide6", dot: "wav")
-            }
         }
         hapticFeedback(called: "peek")
     }
@@ -178,15 +216,18 @@ class ViewController: UIViewController {
     //MARK: - Overrides
     /***************************************************************/
     
+    override func viewDidLoad() {
+        actionButtonLabel.isEnabled = false
+        actionButtonLabel.setTitle("", for: .normal)
+        remainingCardsLabel.isHidden = true
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        print("Width:\(view.viewWithTag(1)?.frame.size.width) - Height:\(view.viewWithTag(1)?.frame.size.height)")
         if traitCollection.horizontalSizeClass == .compact {
             // load slim view
-            print("Compact")
         } else {
             // load wide view
-            print("Wide")
         }
     }
     
