@@ -97,11 +97,10 @@ class GameOfSet {
     }
     
     func replaceSet() {
-        print("\nReplace Set")
-        print(indexOfSelected)
-        print(indexOfSelected.sorted(by: >))
         for item in indexOfSelected.sorted(by: >) {
             if let newCard = getRandomCard() {
+                let oldCard = cardsInPlay[item]
+                cardsOutOfPlay.append(oldCard)
                 cardsInPlay[item] = newCard
             } else {
                 cardsOutOfPlay.append(cardsInPlay.remove(at: item))

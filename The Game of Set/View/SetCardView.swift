@@ -11,6 +11,7 @@ import UIKit
 @IBDesignable
 class SetCardView: UIView {
     
+    
     //MARK: - Properties
     /***************************************************************/
     
@@ -47,6 +48,9 @@ class SetCardView: UIView {
     private func addSubViews() {
         for index in 0...cardPips {
             let symbolView = SymbolView()
+            symbolView.symbol = setCard.shape.rawValue
+            symbolView.colorIndex = setCard.color.rawValue
+            symbolView.symbolFill = setCard.fill.rawValue
             symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
             symbolView.backgroundColor = symbolBackgroundColor
             symbolSubView.append(symbolView)
