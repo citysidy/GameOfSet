@@ -17,7 +17,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Properties
     /***************************************************************/
     
-    private let cardSpacingColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     private let selectedColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
     private let setColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
     private let noSetColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
@@ -26,10 +25,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
     private var cardsOnBoard: [SetCardView] = []
     private var remainingCount = 0
-    private var outOfPlayCount = 0
+    private var selectedCount = 0
     private var selectedTag = 0 {
         didSet {
-            print("\nCard Selected: \(selectedTag)")
             game.cardSelected(selectedTag)
             updateViewFromModel()
         }
@@ -70,6 +68,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     
+    //MARK: - Overrides
+    /***************************************************************/
+    
+    override func viewDidLoad() {
+        actionButtonLabel.isEnabled = false
+        actionButtonLabel.setTitle("", for: .normal)
+        remainingCardsLabel.isHidden = true
+    }
+    
+    
     //MARK: - Methods
     /***************************************************************/
     
@@ -92,7 +100,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         drawCardsOnBoard()
         updateActionButtonLabel()
         updateTopLabels()
-        feedback()
+        audioAndHapticFeedback()
     }
     
     private func removeExistingCardsFromBoard() {
@@ -116,7 +124,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     private func calculateGridFrame() {
         if let viewArea = view.viewWithTag(-1) {
             grid.frame = viewArea.frame
-            viewArea.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
         }
     }
     
@@ -125,13 +132,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             let card = game.cardsInPlay[index]
             if let frame = grid[index] {
                 let cardView = SetCardView(card: card, frame: frame)
-                cardView.backgroundColor = cardSpacingColor
+                cardView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
                 cardsOnBoard.append(cardView)
             }
             if game.indexOfSelected.contains(index) {
                 var color = selectedColor
-                if game.isASet != nil {
-                    if game.isASet! {
+                if let set = game.isASet {
+                    if set {
                         color = setColor
                     } else {
                         color = noSetColor
@@ -160,8 +167,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func updateActionButtonLabel() {
         actionButtonLabel.isEnabled = true
-        if game.isASet != nil {
-            if game.isASet! {
+        if let set = game.isASet {
+            if set {
                 if game.cards.count > 0 {
                     actionButtonLabel.setTitle("Replace Set", for: .normal)
                 } else {
@@ -189,46 +196,26 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func feedback() {
-        if game.cards.count != remainingCount || game.cardsOutOfPlay.count != outOfPlayCount {
+    private func audioAndHapticFeedback() {
+        if game.cards.count != remainingCount {
             remainingCount = game.cards.count
-            outOfPlayCount = game.cardsOutOfPlay.count
             if game.cards.count == 69 {
                 playSound("cardShuffle", dot: "wav")
             } else {
                 playSound("cardSlide6", dot: "wav")
             }
-        } else {
-            if let set = game.isASet {
-                if set {
-                    playSound("ding", dot: "wav")
-                } else {
-                    playSound("error", dot: "wav")
-                }
+        }
+        if let set = game.isASet {
+            if set {
+                playSound("ding", dot: "wav")
             } else {
-                playSound("beep", dot: "wav")
+                playSound("error", dot: "wav")
             }
+        } else if game.indexOfSelected.count > selectedCount {
+            playSound("beep", dot: "wav")
         }
+        selectedCount = game.indexOfSelected.count
         hapticFeedback(called: "peek")
-    }
-    
-    
-    //MARK: - Overrides
-    /***************************************************************/
-    
-    override func viewDidLoad() {
-        actionButtonLabel.isEnabled = false
-        actionButtonLabel.setTitle("", for: .normal)
-        remainingCardsLabel.isHidden = true
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.horizontalSizeClass == .compact {
-            // load slim view
-        } else {
-            // load wide view
-        }
     }
     
     

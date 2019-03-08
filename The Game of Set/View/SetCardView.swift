@@ -16,14 +16,13 @@ class SetCardView: UIView {
     /***************************************************************/
     
     private let cardBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    private let symbolBackgroundColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     
-    var setCard: SetCard
-    var cardPips: Int
-    var cardFrame: CGRect = CGRect.zero {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    
+    private var setCard: SetCard
+    private var cardPips: Int
+    private var cardFrame: CGRect = CGRect.zero
     private var symbolSubView: [SymbolView] = []
+    
+    var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     
     
     //MARK: - Init IBOutlets Actions
@@ -40,7 +39,6 @@ class SetCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-
     
     //MARK: - Methods
     /***************************************************************/
@@ -52,7 +50,7 @@ class SetCardView: UIView {
             symbolView.colorIndex = setCard.color.rawValue
             symbolView.symbolFill = setCard.fill.rawValue
             symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
-            symbolView.backgroundColor = symbolBackgroundColor
+            symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
             symbolSubView.append(symbolView)
             self.addSubview(symbolSubView[index])
         }
@@ -80,13 +78,14 @@ class SetCardView: UIView {
     
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
+        
         cardBackgroundColor.setFill()
         highlightColor.setStroke()
         roundedRect.lineWidth = strokeWidth
         roundedRect.stroke()
+        
         roundedRect.fill()
         addSubViews()
-        roundedRect.addClip()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -107,7 +106,7 @@ extension SetCardView {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
         static let symbolOffsetToBoundsHeight: CGFloat = 0.01
-        static let highlightToBoundsHeight: CGFloat = 0.05
+        static let highlightToBoundsHeight: CGFloat = 0.08
     }
     
     private var strokeWidth: CGFloat {
@@ -169,14 +168,6 @@ extension CGRect {
         } else {
             return CGRect(x: midX, y: minY, width: width/3, height: height)
         }
-    }
-    
-    func inset(by size: CGSize) -> CGRect {
-        return insetBy(dx: size.width, dy: size.height)
-    }
-    
-    func sized(to size: CGSize) -> CGRect {
-        return CGRect(origin: origin, size: size)
     }
     
     
