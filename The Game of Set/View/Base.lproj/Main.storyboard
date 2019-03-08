@@ -71,6 +71,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="r1U-4p-Y4B" appends="YES" id="Z6m-Hf-RTZ"/>
+                                    <outletCollection property="gestureRecognizers" destination="0mu-he-TVs" appends="YES" id="b3F-EL-yg7"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -103,6 +104,11 @@
                         <action selector="selectCard:" destination="BYZ-38-t0r" id="NNq-tP-bZY"/>
                     </connections>
                 </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="0mu-he-TVs">
+                    <connections>
+                        <action selector="swipeDown:" destination="BYZ-38-t0r" id="OWy-5A-cCS"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>

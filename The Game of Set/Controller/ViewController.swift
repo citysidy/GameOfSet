@@ -50,7 +50,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction private func newGameButton(_ sender: UIButton) {
         newGame()
-        updateViewFromModel()
     }
 
     @IBAction private func settingsButton(_ sender: UIButton) {
@@ -62,8 +61,22 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         case .ended:
             if game.cardsInPlay.count == 0 {
                 newGame()
+            } else {
+                updateViewFromModel()
             }
-            updateViewFromModel()
+        default:
+            break
+        }
+    }
+    
+    @IBAction func swipeDown(_ sender: UISwipeGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            if game.cardsInPlay.count == 0 {
+                newGame()
+            } else {
+                actionButtonLabel.sendActions(for: .touchUpInside)
+            }
         default:
             break
         }
@@ -151,20 +164,37 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             view.addSubview(cardsOnBoard[index])
             cardsOnBoard[index].tag = index + 1
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gestureRecognizer:)))
-            gestureRecognizer.delegate = self
-            cardsOnBoard[index].addGestureRecognizer(gestureRecognizer)
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gestureRecognizer:)))
+            tapGestureRecognizer.delegate = self
+            cardsOnBoard[index].addGestureRecognizer(tapGestureRecognizer)
+            let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(gestureRecognizer:)))
+            swipeGestureRecognizer.direction = UISwipeGestureRecognizer.Direction.down
+            swipeGestureRecognizer.delegate = self
+            cardsOnBoard[index].addGestureRecognizer(swipeGestureRecognizer)
         }
     }
     
     @objc private func handleTap(gestureRecognizer: UITapGestureRecognizer) {
-        let view = gestureRecognizer.view
-        let loc = gestureRecognizer.location(in: view)
-        if let cardView = view {
-            let sub = cardView.hitTest(loc, with: nil)
-            let subTag = sub!.tag
-            let symTag = sub!.superview!.tag
-            selectedTag = subTag + symTag - 1
+        switch gestureRecognizer.state {
+        case .ended:
+            let view = gestureRecognizer.view
+            let loc = gestureRecognizer.location(in: view)
+            if let cardView = view {
+                let sub = cardView.hitTest(loc, with: nil)
+                let subTag = sub!.tag
+                let symTag = sub!.superview!.tag
+                selectedTag = subTag + symTag - 1
+            }
+        default: break
+        }
+        
+    }
+    
+    @objc private func handleSwipe(gestureRecognizer: UISwipeGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .ended:
+            actionButtonLabel.sendActions(for: .touchUpInside)
+        default: break
         }
     }
     

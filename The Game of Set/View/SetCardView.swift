@@ -61,12 +61,10 @@ class SetCardView: UIView {
     
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
-        
         cardBackgroundColor.setFill()
         highlightColor.setStroke()
         roundedRect.lineWidth = strokeWidth
         roundedRect.stroke()
-        
         roundedRect.fill()
         addSubViews()
     }
@@ -105,15 +103,18 @@ extension SetCardView {
     }
     
     private var strokeWidth: CGFloat {
-        return bounds.size.height * SizeRatio.highlightToBoundsHeight
+        let side = max(bounds.maxX, bounds.maxY)
+        return side * SizeRatio.highlightToBoundsHeight
     }
     
     private var cornerRadius: CGFloat {
-        return bounds.size.height * SizeRatio.cornerRadiusToBoundsHeight
+        let side = max(bounds.maxX, bounds.maxY)
+        return side * SizeRatio.cornerRadiusToBoundsHeight
     }
     
     private var cardSpacing: CGFloat {
-        return bounds.size.height * SizeRatio.cardSpacingToBoundsHeight
+        let side = max(bounds.maxX, bounds.maxY)
+        return side * SizeRatio.cardSpacingToBoundsHeight
     }
     
     private var symbolSpacing: CGFloat {
