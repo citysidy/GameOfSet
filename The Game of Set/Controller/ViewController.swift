@@ -24,8 +24,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     private var game = GameOfSet()
     private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
     private var cardsOnBoard: [SetCardView] = []
-    private var remainingCount = 0
+    private var cardsInPlay = 0
+    private var cardsOutOfPlay = 0
     private var selectedCount = 0
+    
     private var selectedTag = 0 {
         didSet {
             game.cardSelected(selectedTag)
@@ -86,7 +88,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         actionButtonLabel.isHidden = false
         remainingCardsLabel.isHidden = false
     
-        remainingCount = 0
+        cardsInPlay = 0
+        cardsOutOfPlay = 0
         game = GameOfSet()
         game.newGame()
         
@@ -197,8 +200,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func audioAndHapticFeedback() {
-        if game.cards.count != remainingCount {
-            remainingCount = game.cards.count
+        if game.cardsInPlay.count != cardsInPlay || game.cardsOutOfPlay.count != cardsOutOfPlay {
+            cardsInPlay = game.cardsInPlay.count
+            cardsOutOfPlay = game.cardsOutOfPlay.count
             if game.cards.count == 69 {
                 playSound("cardShuffle", dot: "wav")
             } else {

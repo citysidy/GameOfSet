@@ -12,6 +12,7 @@ struct SetCard: CustomStringConvertible, Hashable {
     
     var description: String {return "\(color)\(shape)\(fill)\(pips)"} //Custom String Convertible implementation
     var hashValue : Int {return cardHash} //Hashable implementation
+    
     static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
         return lhs.cardHash == rhs.cardHash
     }
@@ -26,6 +27,7 @@ struct SetCard: CustomStringConvertible, Hashable {
     let shape: Shape
     let fill: Fill
     let pips: Pips
+    
     var cardHash: Int {
         return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
     }

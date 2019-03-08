@@ -40,23 +40,6 @@ class SetCardView: UIView {
     }
     
     
-    //MARK: - Methods
-    /***************************************************************/
-    
-    private func addSubViews() {
-        for index in 0...cardPips {
-            let symbolView = SymbolView()
-            symbolView.symbol = setCard.shape.rawValue
-            symbolView.colorIndex = setCard.color.rawValue
-            symbolView.symbolFill = setCard.fill.rawValue
-            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
-            symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-            symbolSubView.append(symbolView)
-            self.addSubview(symbolSubView[index])
-        }
-    }
-    
-    
     //MARK: - Overrides
     /***************************************************************/
     
@@ -88,9 +71,21 @@ class SetCardView: UIView {
         addSubViews()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        setNeedsLayout()
-        setNeedsDisplay()
+    
+    //MARK: - Methods
+    /***************************************************************/
+    
+    private func addSubViews() {
+        for index in 0...cardPips {
+            let symbolView = SymbolView()
+            symbolView.symbol = setCard.shape.rawValue
+            symbolView.colorIndex = setCard.color.rawValue
+            symbolView.symbolFill = setCard.fill.rawValue
+            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
+            symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            symbolSubView.append(symbolView)
+            self.addSubview(symbolSubView[index])
+        }
     }
     
     

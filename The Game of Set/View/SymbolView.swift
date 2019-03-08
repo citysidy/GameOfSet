@@ -15,26 +15,16 @@ class SymbolView: UIView {
     /***************************************************************/
     
     private let symbolColors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
+    
+    private var path = UIBezierPath()
+    
     private var strokeWidth: CGFloat {
         return bounds.size.height * 0.05
     }
     
-    private var path = UIBezierPath()
-    
-    var colorIndex: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    var symbol: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    var symbolFill: Int = 0 {didSet {setNeedsDisplay(); setNeedsLayout()}}
-    
-//    init(card: SetCard, frame: CGRect) {
-//        colorIndex = card.color.rawValue
-//        symbol = card.shape.rawValue
-//        symbolFill = card.fill.rawValue
-//        super.init(frame: frame)
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    var colorIndex: Int = 0
+    var symbol: Int = 0
+    var symbolFill: Int = 0
     
     
     //MARK: - Methods
@@ -97,8 +87,8 @@ class SymbolView: UIView {
     private func stripeFill() {
         let stripe = UIBezierPath()
         for x in stride(from: bounds.minX, to: bounds.maxX, by: bounds.maxX/10) {
-            stripe.move(to: CGPoint(x: CGFloat(x), y: bounds.minY))
-            stripe.addLine(to: CGPoint(x: CGFloat(x), y: bounds.maxY))
+            stripe.move(to: CGPoint(x: x, y: bounds.minY))
+            stripe.addLine(to: CGPoint(x: x, y: bounds.maxY))
         }
         stripe.lineWidth = strokeWidth / 3
         stripe.stroke()
@@ -131,8 +121,9 @@ class SymbolView: UIView {
             diamond()
         case 1:
             oval()
-        default:
+        case 2:
             wave()
+        default: break
         }
         configureSymbol()
     }
