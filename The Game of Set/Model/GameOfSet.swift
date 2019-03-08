@@ -25,11 +25,11 @@ class GameOfSet {
             selectedCards.append(cardsInPlay[item]) //Create array of 3 selected cards
         }
         if testMode {return true} //Any 3 are a match in test mode
-        return (Array(String(selectedCards.map{ $0.hashValue }.reduce(0, +))).filter{ $0 != "0" && $0 != "3" && $0 != "6" }.count) == 0 //Adds up the numeric values (0, 1, or 2) of each property of the 3 selected cards - Only correct sets will sum to a multiple of 3. If the count of non 3 multiples is zero, return true (it is a set).
+        return (Array(String(selectedCards.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0 //Adds up the numeric values (0, 1, or 2) of each property of the 3 selected cards - Only correct sets will sum to a multiple of 3. If the count of non 3 multiples is zero, return true (it is a set).
     }
     
     
-    //MARK: - Init
+    //MARK: - Init IBOutlets Actions
     /***************************************************************/
     
     init() { //Initialize every combination of the card properties (4 properites with 3 variants each = 81 total cards)
@@ -90,9 +90,9 @@ class GameOfSet {
     func resetSelectedCards() {
         if isASet ?? false {
             replaceSet()
-            score += 5
+            score += 5 //Score for a good set
         } else {
-            score -= 5
+            score -= 5 //Score penalty for a non set
         }
         indexOfSelected = []
     }
@@ -110,10 +110,8 @@ class GameOfSet {
     }
     
     func newGame() {
-        resetSelectedCards()
-        score = 0
-        cardsOutOfPlay = []
         for _ in 1...4 {action()}
     }
+    
     
 }

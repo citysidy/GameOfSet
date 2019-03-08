@@ -8,9 +8,7 @@
 
 import UIKit
 
-@IBDesignable
 class SetCardView: UIView {
-    
     
     //MARK: - Properties
     /***************************************************************/
@@ -23,6 +21,7 @@ class SetCardView: UIView {
     private var symbolSubView: [SymbolView] = []
     
     var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    var cardColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     
     
     //MARK: - Init IBOutlets Actions
@@ -76,8 +75,8 @@ class SetCardView: UIView {
     private func addSubViews() {
         for index in 0...cardPips {
             let symbolView = SymbolView()
-            symbolView.symbol = setCard.shape.rawValue
-            symbolView.colorIndex = setCard.color.rawValue
+            symbolView.symbolType = setCard.shape.rawValue
+            symbolView.symbolColor = cardColor
             symbolView.symbolFill = setCard.fill.rawValue
             symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
             symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)

@@ -10,11 +10,8 @@ import UIKit
 
 class SymbolView: UIView {
     
-    
     //MARK: - Properties
     /***************************************************************/
-    
-    
     
     private var path = UIBezierPath()
     
@@ -23,20 +20,55 @@ class SymbolView: UIView {
     }
     
     var symbolColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    var symbol: Int = 0
+    var symbolType: Int = 0
     var symbolFill: Int = 0
+    
+    
+    //MARK: - Overrides
+    /***************************************************************/
+    
+    override func draw(_ rect: CGRect) {
+        switch symbolType {
+        case 0:
+            diamond()
+        case 1:
+            oval()
+        case 2:
+            wave()
+        default: break
+        }
+        configureSymbol()
+    }
     
     
     //MARK: - Methods
     /***************************************************************/
     
-    private func triangle() {
-        let height = ((sqrt(3.0)/2) * bounds.maxX) - (strokeWidth * 2)
-        let yOffset = (bounds.maxY - height)/2
-        path.move(to: CGPoint(x: bounds.midX, y: yOffset))
-        path.addLine(to: CGPoint(x: bounds.maxX - strokeWidth, y: bounds.maxY-yOffset))
-        path.addLine(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.maxY-yOffset))
-        path.close()
+    private func configureSymbol() {
+        path.lineWidth = strokeWidth
+        let drawColor = symbolColor
+        drawColor.setStroke()
+        path.stroke()
+        path.addClip()
+        switch symbolFill {
+        case 1:
+            stripeFill()
+        case 2:
+            drawColor.setFill()
+            path.fill()
+        default:
+            break
+        }
+    }
+    
+    private func stripeFill() {
+        let stripe = UIBezierPath()
+        for x in stride(from: bounds.minX, to: bounds.maxX, by: bounds.maxX/10) {
+            stripe.move(to: CGPoint(x: x, y: bounds.minY))
+            stripe.addLine(to: CGPoint(x: x, y: bounds.maxY))
+        }
+        stripe.lineWidth = strokeWidth / 3
+        stripe.stroke()
     }
     
     private func diamond() {
@@ -48,13 +80,7 @@ class SymbolView: UIView {
         path.addLine(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.midY))
         path.close()
     }
-    
-    private func circle() {
-        let radius = ((sqrt(3.0)/4) * bounds.maxX) - (strokeWidth)
-        let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        path.addArc(withCenter: center, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
-    }
-    
+   
     private func oval() {
         let radius = ((sqrt(3.0)/6.2) * bounds.maxX) - (strokeWidth)
         let center1 = CGPoint(x: bounds.midX - radius, y: bounds.midY)
@@ -84,48 +110,19 @@ class SymbolView: UIView {
         path.lineWidth = strokeWidth
     }
     
-    private func stripeFill() {
-        let stripe = UIBezierPath()
-        for x in stride(from: bounds.minX, to: bounds.maxX, by: bounds.maxX/10) {
-            stripe.move(to: CGPoint(x: x, y: bounds.minY))
-            stripe.addLine(to: CGPoint(x: x, y: bounds.maxY))
-        }
-        stripe.lineWidth = strokeWidth / 3
-        stripe.stroke()
+    private func triangle() {
+        let height = ((sqrt(3.0)/2) * bounds.maxX) - (strokeWidth * 2)
+        let yOffset = (bounds.maxY - height)/2
+        path.move(to: CGPoint(x: bounds.midX, y: yOffset))
+        path.addLine(to: CGPoint(x: bounds.maxX - strokeWidth, y: bounds.maxY-yOffset))
+        path.addLine(to: CGPoint(x: bounds.minX + strokeWidth, y: bounds.maxY-yOffset))
+        path.close()
     }
     
-    private func configureSymbol() {
-        path.lineWidth = strokeWidth
-        let drawColor = symbolColor
-        drawColor.setStroke()
-        path.stroke()
-        path.addClip()
-        switch symbolFill {
-        case 1:
-            stripeFill()
-        case 2:
-            drawColor.setFill()
-            path.fill()
-        default:
-            break
-        }
-    }
-    
-    
-    //MARK: - Overrides
-    /***************************************************************/
-    
-    override func draw(_ rect: CGRect) {
-        switch symbol {
-        case 0:
-            diamond()
-        case 1:
-            oval()
-        case 2:
-            wave()
-        default: break
-        }
-        configureSymbol()
+    private func circle() {
+        let radius = ((sqrt(3.0)/4) * bounds.maxX) - (strokeWidth)
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        path.addArc(withCenter: center, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
     }
     
     

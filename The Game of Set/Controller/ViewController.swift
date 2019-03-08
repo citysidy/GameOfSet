@@ -17,10 +17,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Properties
     /***************************************************************/
     
+    private let cardColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)]
+    
     private let selectedColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
     private let setColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
     private let noSetColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
-    private let cardColors = [#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)]
     
     private var game = GameOfSet()
     private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
@@ -37,7 +38,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     
-    //MARK: - IBOutlets and Actions
+    //MARK: - Init IBOutlets Actions
     /***************************************************************/
     
     @IBOutlet private weak var scoreLabel: UILabel!
@@ -65,8 +66,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             } else {
                 updateViewFromModel()
             }
-        default:
-            break
+        default: break
         }
     }
     
@@ -78,8 +78,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             } else {
                 actionButtonLabel.sendActions(for: .touchUpInside)
             }
-        default:
-            break
+        default: break
         }
     }
     
@@ -91,6 +90,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
+    }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        game.testMode = !game.testMode
+        updateViewFromModel()
     }
     
     
@@ -250,7 +254,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         } else if game.indexOfSelected.count > selectedCount {
             selectedCount = game.indexOfSelected.count
-            
             playSound("beep", dot: "wav")
         }
         if game.indexOfSelected.count == 0 {selectedCount = 0}
@@ -277,15 +280,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         var mySound: SystemSoundID = 0
         AudioServicesCreateSystemSoundID(fileURL as CFURL, &mySound)
         AudioServicesPlaySystemSound(mySound)
-    }
-    
-    
-    //MARK: - Shake
-    /***************************************************************/
-    
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        game.testMode = !game.testMode
-        updateViewFromModel()
     }
     
     
