@@ -6,13 +6,31 @@
 //  Copyright © 2019 Cassidy Caid. All rights reserved.
 //
 
+/*
+Last official TODO:
+More comments and Rotate Gesture Support
+
+Desired TODO:
+Orientation bug on iPad and sometimes iPhone
+
+Fix scoring so it updates immediately instead of "on next tap"
+Hints
+
+Animations for cards
+Animated popups for scoring
+Automatic Orientation Change Layout
+Settings menu
+Help/Instructions
+Timer based score modifiers
+Light Mode/Dark Mode
+Easy play mode (less card properties)
+*/
+
+
 import UIKit
 import AVFoundation
 
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
-
-    //TODO: Count sets in play.
-    //TODO: Animations and delays.
 
     //MARK: - Properties
     /***************************************************************/
@@ -136,8 +154,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let shortSide = (count + longSide - 1) / longSide
         switch UIDevice.current.orientation {
         case .portrait:
+            print("Portrait")
             grid.layout = .dimensions(rowCount: shortSide, columnCount: longSide)
         default:
+            print("Not Portrait")
             grid.layout = .dimensions(rowCount: longSide, columnCount: shortSide)
         }
     }
