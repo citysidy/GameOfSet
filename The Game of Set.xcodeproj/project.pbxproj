@@ -79,7 +79,6 @@
 				DE4B150D220BC88600D4F314 /* Model */,
 				DE4B1507220BC82A00D4F314 /* View */,
 				DE4B1508220BC83700D4F314 /* Controller */,
-				DE4B14FC220BC4C400D4F314 /* Assets.xcassets */,
 				DE4B150E220BC89000D4F314 /* Supporting Files */,
 				DE4B1501220BC4C400D4F314 /* Info.plist */,
 			);
@@ -117,6 +116,7 @@
 		DE4B150E220BC89000D4F314 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DE4B14FC220BC4C400D4F314 /* Assets.xcassets */,
 				DEEDD2B1221111180030084C /* cardShuffle.wav */,
 				DEEDD2AF22110F090030084C /* cardSlide6.wav */,
 				DEEDD2AD22110CF20030084C /* beep.wav */,
