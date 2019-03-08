@@ -14,7 +14,7 @@ class SymbolView: UIView {
     //MARK: - Properties
     /***************************************************************/
     
-    private let symbolColors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
+    
     
     private var path = UIBezierPath()
     
@@ -22,7 +22,7 @@ class SymbolView: UIView {
         return bounds.size.height * 0.05
     }
     
-    var colorIndex: Int = 0
+    var symbolColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     var symbol: Int = 0
     var symbolFill: Int = 0
     
@@ -96,15 +96,15 @@ class SymbolView: UIView {
     
     private func configureSymbol() {
         path.lineWidth = strokeWidth
-        let symbolColor = symbolColors[colorIndex]
-        symbolColor.setStroke()
+        let drawColor = symbolColor
+        drawColor.setStroke()
         path.stroke()
         path.addClip()
         switch symbolFill {
         case 1:
             stripeFill()
         case 2:
-            symbolColor.setFill()
+            drawColor.setFill()
             path.fill()
         default:
             break

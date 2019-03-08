@@ -20,6 +20,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     private let selectedColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
     private let setColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
     private let noSetColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+    private let cardColors = [#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)]
     
     private var game = GameOfSet()
     private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
@@ -149,6 +150,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             if let frame = grid[index] {
                 let cardView = SetCardView(card: card, frame: frame)
                 cardView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                cardView.cardColor = cardColors[card.color.rawValue]
                 cardsOnBoard.append(cardView)
             }
             if game.indexOfSelected.contains(index) {
@@ -240,15 +242,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
         if let set = game.isASet {
+            selectedCount = 0
             if set {
                 playSound("ding", dot: "wav")
             } else {
                 playSound("error", dot: "wav")
             }
         } else if game.indexOfSelected.count > selectedCount {
+            selectedCount = game.indexOfSelected.count
+            
             playSound("beep", dot: "wav")
         }
-        selectedCount = game.indexOfSelected.count
+        if game.indexOfSelected.count == 0 {selectedCount = 0}
         hapticFeedback(called: "peek")
     }
     
