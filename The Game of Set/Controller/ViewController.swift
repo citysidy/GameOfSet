@@ -9,7 +9,6 @@
 /*
 Last official TODO:
 More comments
-iOS text scaling support
 
 Desired TODO:
 Fix scoring so it updates immediately instead of "on next tap"
@@ -17,7 +16,6 @@ Hints
 Animations for cards
 Card shadows
 Animated popups for scoring
-Automatic Orientation Change Layout
 Settings menu
 Help/Instructions
 Timer based score modifiers
@@ -70,11 +68,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         updateViewFromModel()
     }
     
+    @IBOutlet weak var newGameButtonLabel: UIButton!
     @IBAction private func newGameButton(_ sender: UIButton) {
         newGame()
     }
 
+    @IBOutlet weak var settingsButtonLabel: UIButton!
     @IBAction private func settingsButton(_ sender: UIButton) {
+        if game.cardsInPlay.count == 0 {return}
         updateViewFromModel() //Temp action until settings are actually implemented
     }
     
@@ -83,6 +84,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     /***************************************************************/
     
     override func viewDidLoad() {
+        configureFonts()
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
@@ -101,10 +103,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         swipeGestureRecognizer.delegate = self
     }
     
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        print("Trait Collection Did Change")
-//        updateViewFromModel()
-//    }
+    override func viewDidLayoutSubviews() {
+        if game.cardsInPlay.count > 0 {updateViewFromModel()}
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) { //Handle font accessiblity settings
+        configureFonts()
+    }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         game.testMode = !game.testMode
@@ -281,6 +286,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         if game.indexOfSelected.count == 0 {cardsSelectedCount = 0} //Reset the counter if the last card tap resulted in zero selection count (ie deselection with only one selected
         hapticFeedback(called: "peek") //Every action gets a haptic shake
+    }
+    
+    private func configureFonts() {
+        scoreLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        remainingCardsLabel.font = UIFont.preferredFont(forTextStyle: .callout)
+        newGameButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        settingsButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        actionButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
     }
     
     
