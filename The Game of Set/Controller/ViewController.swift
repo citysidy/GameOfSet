@@ -104,7 +104,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        if game.cardsInPlay.count > 0 {updateViewFromModel()}
+        removeCardsFromBoard()
+        calculateGrid()
+        drawCardsOnBoard()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) { //Handle font accessiblity settings
@@ -177,7 +179,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func updateViewFromModel() {
-        removeExistingCardsFromBoard()
+        removeCardsFromBoard()
         calculateGrid()
         drawCardsOnBoard()
         updateActionButtonLabel()
@@ -185,7 +187,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         audioAndHapticFeedback()
     }
     
-    private func removeExistingCardsFromBoard() {
+    private func removeCardsFromBoard() {
         cardsInPlay = []
         view.subviews.filter{$0 is SetCardView}.forEach({$0.removeFromSuperview()}) //Filter all the views for type SetCardView then remove
     }
