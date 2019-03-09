@@ -11,11 +11,8 @@ Last official TODO:
 More comments and Rotate Gesture Support
 
 Desired TODO:
-Orientation bug on iPad and sometimes iPhone
-
 Fix scoring so it updates immediately instead of "on next tap"
 Hints
-
 Animations for cards
 Animated popups for scoring
 Automatic Orientation Change Layout
@@ -24,6 +21,8 @@ Help/Instructions
 Timer based score modifiers
 Light Mode/Dark Mode
 Easy play mode (less card properties)
+scoreboard
+endgame
 */
 
 
@@ -100,6 +99,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    @IBAction func rotatationGesture(_ sender: UIRotationGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            print("Rotation Action")
+        default: break
+        }
+    }
+    
     
     //MARK: - Overrides
     /***************************************************************/
@@ -109,6 +116,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
     }
+    
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        print("Trait Collection Did Change")
+//        updateViewFromModel()
+//    }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         game.testMode = !game.testMode
@@ -134,8 +146,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func updateViewFromModel() {
         removeExistingCardsFromBoard()
-        calculateGridLayout()
-        calculateGridFrame()
+        calculateGrid()
         drawCardsOnBoard()
         updateActionButtonLabel()
         updateTopLabels()
@@ -144,25 +155,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func removeExistingCardsFromBoard() {
         cardsOnBoard = []
-        view.subviews.filter{ $0 is SetCardView }.forEach({ $0.removeFromSuperview() })
+        view.subviews.filter{$0 is SetCardView}.forEach({$0.removeFromSuperview()})
     }
     
-    private func calculateGridLayout() {
+    private func calculateGrid() {
         let count = game.cardsInPlay.count
         if count == 0 {return}
-        let longSide = count.isqrt
-        let shortSide = (count + longSide - 1) / longSide
-        switch UIDevice.current.orientation {
-        case .portrait:
-            print("Portrait")
-            grid.layout = .dimensions(rowCount: shortSide, columnCount: longSide)
-        default:
-            print("Not Portrait")
-            grid.layout = .dimensions(rowCount: longSide, columnCount: shortSide)
+        let long = count.isqrt
+        let short = (count + long - 1) / long
+        if view.bounds.size.width > view.bounds.size.height {
+            grid.layout = .dimensions(rowCount: long, columnCount: short)
+        } else {
+            grid.layout = .dimensions(rowCount: short, columnCount: long)
         }
-    }
-    
-    private func calculateGridFrame() {
         if let viewArea = view.viewWithTag(-1) {
             grid.frame = viewArea.frame
         }
@@ -197,6 +202,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             swipeGestureRecognizer.direction = UISwipeGestureRecognizer.Direction.down
             swipeGestureRecognizer.delegate = self
             cardsOnBoard[index].addGestureRecognizer(swipeGestureRecognizer)
+            let rotateGestureRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(handleRotate(gestureRecognizer:)))
+            rotateGestureRecognizer.delegate = self
+            cardsOnBoard[index].addGestureRecognizer(rotateGestureRecognizer)
         }
     }
     
@@ -213,13 +221,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         default: break
         }
-        
     }
     
     @objc private func handleSwipe(gestureRecognizer: UISwipeGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
             actionButtonLabel.sendActions(for: .touchUpInside)
+        default: break
+        }
+    }
+    
+    @objc private func handleRotate(gestureRecognizer: UIRotationGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .ended:
+            game.shuffleCardsInPlay()
         default: break
         }
     }

@@ -17,7 +17,7 @@ class SetCardView: UIView {
     
     private var setCard: SetCard
     private var cardPips: Int
-    private var cardFrame: CGRect = CGRect.zero
+    private var cardFrame: CGRect
     private var symbolSubView: [SymbolView] = []
     
     var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)

@@ -72,6 +72,7 @@
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="r1U-4p-Y4B" appends="YES" id="Z6m-Hf-RTZ"/>
                                     <outletCollection property="gestureRecognizers" destination="0mu-he-TVs" appends="YES" id="b3F-EL-yg7"/>
+                                    <outletCollection property="gestureRecognizers" destination="0nb-1c-bZ2" appends="YES" id="yeG-y1-3EE"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -109,6 +110,11 @@
                         <action selector="swipeDown:" destination="BYZ-38-t0r" id="OWy-5A-cCS"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <rotationGestureRecognizer id="0nb-1c-bZ2">
+                    <connections>
+                        <action selector="rotatationGesture:" destination="BYZ-38-t0r" id="PTX-jg-4FJ"/>
+                    </connections>
+                </rotationGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>
