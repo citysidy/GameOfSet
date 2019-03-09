@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLayoutSubviews() {
         //Update the views if the game is started and the frame size changes
-        if self.view.frame != grid.frame && game.cardsInPlay.count > 0 {
+        if view.viewWithTag(-1)!.frame != grid.frame && game.cardsInPlay.count > 0 {
             updateViewFromModel()
         }
     }
