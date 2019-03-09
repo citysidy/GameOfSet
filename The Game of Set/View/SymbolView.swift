@@ -13,12 +13,13 @@ class SymbolView: UIView {
     //MARK: - Properties
     /***************************************************************/
     
-    private var path = UIBezierPath()
+    private var path = UIBezierPath() //Path for the symbol
     
     private var strokeWidth: CGFloat {
-        return bounds.size.height * 0.05
+        return bounds.size.height * 0.05 //Calculate the stroke width based on bounds
     }
     
+    //Placeholder values
     var symbolColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     var symbolType: Int = 0
     var symbolFill: Int = 0
@@ -45,16 +46,16 @@ class SymbolView: UIView {
     /***************************************************************/
     
     private func configureSymbol() {
+        //Setup common to all the symbols
         path.lineWidth = strokeWidth
-        let drawColor = symbolColor
-        drawColor.setStroke()
+        symbolColor.setStroke()
         path.stroke()
         path.addClip()
-        switch symbolFill {
-        case 1:
+        switch symbolFill { //Case 0 is no fill so it is omitted
+        case 1: //Striped
             stripeFill()
-        case 2:
-            drawColor.setFill()
+        case 2: //Solid
+            symbolColor.setFill()
             path.fill()
         default:
             break
@@ -63,11 +64,11 @@ class SymbolView: UIView {
     
     private func stripeFill() {
         let stripe = UIBezierPath()
-        for x in stride(from: bounds.minX, to: bounds.maxX, by: bounds.maxX/10) {
+        for x in stride(from: bounds.minX, to: bounds.maxX, by: bounds.maxX/10) { //Draw 10 stripes
             stripe.move(to: CGPoint(x: x, y: bounds.minY))
             stripe.addLine(to: CGPoint(x: x, y: bounds.maxY))
         }
-        stripe.lineWidth = strokeWidth / 3
+        stripe.lineWidth = strokeWidth / 3 //Stripe width function of the bounds size
         stripe.stroke()
     }
     
@@ -110,7 +111,7 @@ class SymbolView: UIView {
         path.lineWidth = strokeWidth
     }
     
-    private func triangle() {
+    private func triangle() { //Unused
         let height = ((sqrt(3.0)/2) * bounds.maxX) - (strokeWidth * 2)
         let yOffset = (bounds.maxY - height)/2
         path.move(to: CGPoint(x: bounds.midX, y: yOffset))
@@ -119,7 +120,7 @@ class SymbolView: UIView {
         path.close()
     }
     
-    private func circle() {
+    private func circle() { //Unused
         let radius = ((sqrt(3.0)/4) * bounds.maxX) - (strokeWidth)
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
         path.addArc(withCenter: center, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)

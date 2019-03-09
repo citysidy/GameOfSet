@@ -114,6 +114,6 @@ class GameOfSet {
     }
     
     func shuffleCardsInPlay() {
-        cardsInPlay.shuffle()
+        cardsInPlay.shuffle() //Activated by the rotate gesture to shuffle the cards on the board
     }
 }

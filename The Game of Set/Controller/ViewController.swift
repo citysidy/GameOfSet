@@ -6,11 +6,7 @@
 //  Copyright © 2019 Cassidy Caid. All rights reserved.
 //
 
-/*
-Last official TODO:
-More comments
-
-Desired TODO:
+/*TODO:
 Fix scoring so it updates immediately instead of "on next tap"
 Hints
 Animations for cards
@@ -89,14 +85,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
         
+        //Tap Gesture
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gestureRecognizer:)))
         tapGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
+        //Rotate Gesture
         let rotateGestureRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(handleRotate(gestureRecognizer:)))
         self.view.addGestureRecognizer(rotateGestureRecognizer)
         rotateGestureRecognizer.delegate = self
         
+        //Swipe Down Gesture
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(gestureRecognizer:)))
         swipeGestureRecognizer.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeGestureRecognizer)
@@ -104,16 +103,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        removeCardsFromBoard()
-        calculateGrid()
-        drawCardsOnBoard()
+        //Update the views if the game is started and the frame size changes
+        if self.view.frame != grid.frame && game.cardsInPlay.count > 0 {
+            updateViewFromModel()
+        }
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) { //Handle font accessiblity settings
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        //Handle font accessiblity settings
         configureFonts()
     }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        //Shaking toggles test mode for testing end-game
         game.testMode = !game.testMode
         updateViewFromModel()
     }

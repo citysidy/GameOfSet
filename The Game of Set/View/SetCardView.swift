@@ -18,7 +18,8 @@ class SetCardView: UIView {
     private var setCard: SetCard
     private var cardPips: Int
     private var cardFrame: CGRect
-    private var symbolSubView: [SymbolView] = []
+    
+    private var symbolSubView: [SymbolView] = [] //Array to hold the symbols
     
     var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
     var cardColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -27,14 +28,14 @@ class SetCardView: UIView {
     //MARK: - Init IBOutlets Actions
     /***************************************************************/
     
-    init(card: SetCard, frame: CGRect) {
+    init(card: SetCard, frame: CGRect) { //Using initializer instead of dummy values
         cardFrame = frame
         setCard = card
         cardPips = card.pips.rawValue
         super.init(frame: frame)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) { //Required but I don't know what it means
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -51,7 +52,7 @@ class SetCardView: UIView {
         case 3:
             symbolSubView[1].center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midY)
             symbolSubView.last?.center =  CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midY)
-            fallthrough
+            fallthrough //Fallthrough since the 3 case and 1 case both use the middle symbol
         case 1:
             symbolSubView.first?.center = CGPoint(x: bounds.midX, y: bounds.midY)
         default: break
@@ -72,6 +73,7 @@ class SetCardView: UIView {
     //MARK: - Methods
     /***************************************************************/
     
+    //Generate the subviews
     private func addSubViews() {
         for index in 0...cardPips {
             let symbolView = SymbolView()
@@ -94,6 +96,7 @@ class SetCardView: UIView {
 
 extension SetCardView {
     
+    //Constants
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
@@ -126,6 +129,7 @@ extension SetCardView {
 
 extension CGRect {
     
+    //Used to layout the symbol subview loctions
     var thirds: CGRect {
         let width = min(maxX, maxY)
         let height = max(maxX, maxY) / 3
