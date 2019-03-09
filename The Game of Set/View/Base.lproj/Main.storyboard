@@ -69,11 +69,6 @@
                             <view opaque="NO" tag="-1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
                                 <rect key="frame" x="16" y="108" width="378" height="710"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="r1U-4p-Y4B" appends="YES" id="Z6m-Hf-RTZ"/>
-                                    <outletCollection property="gestureRecognizers" destination="0mu-he-TVs" appends="YES" id="b3F-EL-yg7"/>
-                                    <outletCollection property="gestureRecognizers" destination="0nb-1c-bZ2" appends="YES" id="yeG-y1-3EE"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,21 +95,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="r1U-4p-Y4B">
-                    <connections>
-                        <action selector="selectCard:" destination="BYZ-38-t0r" id="NNq-tP-bZY"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <swipeGestureRecognizer direction="down" id="0mu-he-TVs">
-                    <connections>
-                        <action selector="swipeDown:" destination="BYZ-38-t0r" id="OWy-5A-cCS"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <rotationGestureRecognizer id="0nb-1c-bZ2">
-                    <connections>
-                        <action selector="rotatationGesture:" destination="BYZ-38-t0r" id="PTX-jg-4FJ"/>
-                    </connections>
-                </rotationGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>

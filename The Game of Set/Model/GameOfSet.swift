@@ -114,6 +114,6 @@ class GameOfSet {
     }
     
     func shuffleCardsInPlay() {
-        print("Shuffle Cards In Play")
+        cardsInPlay.shuffle()
     }
 }
