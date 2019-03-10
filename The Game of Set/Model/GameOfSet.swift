@@ -109,7 +109,7 @@ class GameOfSet {
         }
     }
     
-    func newGame() {
+    func dealTwelve() {
         for _ in 1...4 {action()} //Since action method deals 3 cards, we call it 4 times to get the starting 12 cards of a game
     }
     

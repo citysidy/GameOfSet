@@ -25,14 +25,14 @@ endgame
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, UIGestureRecognizerDelegate {
+class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
 
+    
     //MARK: - Properties
     /***************************************************************/
     
     private let cardColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)] //Colors for the card symbols
     
-    //Colo
     private let selectionColors = ["select":#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),"set":#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),"noset":#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)] //Colors for the selection borders
     
     private var game = GameOfSet()
@@ -103,7 +103,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        //Update the views if the game is started and the frame size changes
+        //Update the views if the game is started and the main frame size changes
         if view.viewWithTag(-1)!.frame != grid.frame && game.cardsInPlay.count > 0 {
             updateViewFromModel()
         }
@@ -175,7 +175,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         cardsOutOfPlayCount = 0
         cardsSelectedCount = 0
         game = GameOfSet()
-        game.newGame()
+        game.dealTwelve()
         
         updateViewFromModel()
     }

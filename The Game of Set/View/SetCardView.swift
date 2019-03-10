@@ -45,13 +45,14 @@ class SetCardView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        let cardBounds = bounds.insetBy(dx: cardSpacing, dy: cardSpacing)
         switch symbolSubView.count {
         case 2:
-            symbolSubView.first?.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topOffsetHalf.midY)
-            symbolSubView.last?.center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomOffsetHalf.midY)
+            symbolSubView.first?.center = CGPoint(x: cardBounds.topOffsetHalf.midX, y: cardBounds.topOffsetHalf.midY)
+            symbolSubView.last?.center = CGPoint(x: cardBounds.bottomOffsetHalf.midX, y: cardBounds.bottomOffsetHalf.midY)
         case 3:
-            symbolSubView[1].center = CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).topThird.midY)
-            symbolSubView.last?.center =  CGPoint(x: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midX, y: bounds.insetBy(dx: cardSpacing, dy: cardSpacing).bottomThird.midY)
+            symbolSubView[1].center = CGPoint(x: cardBounds.topThird.midX, y: cardBounds.topThird.midY)
+            symbolSubView.last?.center =  CGPoint(x: cardBounds.bottomThird.midX, y: cardBounds.bottomThird.midY)
             fallthrough //Fallthrough since the 3 case and 1 case both use the middle symbol
         case 1:
             symbolSubView.first?.center = CGPoint(x: bounds.midX, y: bounds.midY)
@@ -80,7 +81,7 @@ class SetCardView: UIView {
             symbolView.symbolType = setCard.shape.rawValue
             symbolView.symbolColor = cardColor
             symbolView.symbolFill = setCard.fill.rawValue
-            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds.insetBy(dx: symbolSpacing, dy: symbolSpacing)
+            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds
             symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
             symbolSubView.append(symbolView)
             self.addSubview(symbolSubView[index])
@@ -100,13 +101,12 @@ extension SetCardView {
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardSpacingToBoundsHeight: CGFloat = 0.03
-        static let symbolOffsetToBoundsHeight: CGFloat = 0.01
-        static let highlightToBoundsHeight: CGFloat = 0.08
+        static let strokeToBoundsHeight: CGFloat = 0.05
     }
     
     private var strokeWidth: CGFloat {
         let side = max(bounds.maxX, bounds.maxY)
-        return side * SizeRatio.highlightToBoundsHeight
+        return side * SizeRatio.strokeToBoundsHeight
     }
     
     private var cornerRadius: CGFloat {
@@ -119,10 +119,6 @@ extension SetCardView {
         return side * SizeRatio.cardSpacingToBoundsHeight
     }
     
-    private var symbolSpacing: CGFloat {
-        let side = max(bounds.maxX, bounds.maxY)
-        return side * SizeRatio.symbolOffsetToBoundsHeight
-    }
     
 }
 
