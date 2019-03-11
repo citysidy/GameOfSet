@@ -17,7 +17,7 @@ class GameOfSet {
     private(set) var cardsOutOfPlay: [SetCard] = []
     private(set) var indexOfSelected: [Int] = []
     private(set) var score = 0
-
+    
     var isASet: Bool? { //Main game logic
         guard indexOfSelected.count == 3 else {return nil} //Optional is nil until 3 cards have been selected
         var selectedCards = [SetCard]()
@@ -53,10 +53,10 @@ class GameOfSet {
         return cards.remove(at: cards.count.rando)
     }
     
-    //Main action button adds three cards to the play area, unless the reset flag has been set
     func action() {
-        if resetRequired() {
-        } else {
+        if indexOfSelected.count == 3 { //Action button reseets the selection if 3 are selected
+            resetSelectedCards()
+        } else {  //Action button deals 3 additional cards in most cases
             for _ in 1...3 {
                 if let newCard = getRandomCard() {
                     cardsInPlay.append(newCard)
@@ -67,33 +67,26 @@ class GameOfSet {
     
     //This dirty code is a result of the assignment requirements that a fourth selection should replace or clear the first 3 selected and select the fourth - I feel like there is a better implementation but I cannot grok it
     func cardSelected(_ cardIndex: Int) {
+        var deselection = false
         if indexOfSelected.contains(cardIndex) { //Selecting a card that is already selected
-            if resetRequired() { //If you selected one of the 3 that were already selected then reset
+            if indexOfSelected.count == 3 { //If you selected one of the 3 that were already selected then reset
+                resetSelectedCards()
             } else { //If less than 3 selected, deselect the selected
                 indexOfSelected.remove(at: indexOfSelected.firstIndex(of: cardIndex)!)
-                score -= 1 //Score penalty for deselection
+                deselection = true
             }
         } else { //Selecting a card that is not already selected
-            if resetRequired() {} //Always reset if 3 were already selected
+            if indexOfSelected.count == 3 { //Always reset if 3 were already selected
+                resetSelectedCards()
+            }
             indexOfSelected.append(cardIndex) //Select new card
         }
-    }
-    
-    private func resetRequired() -> Bool {
-        if isASet != nil { //Check if 3 cards are selected
-            resetSelectedCards()
-            return true
-        } else {
-            return false
-        }
+        calculateScore(didDeselect: deselection)
     }
     
     private func resetSelectedCards() {
         if isASet ?? false {
             replaceSet()
-            score += 5 //Score for a good set
-        } else {
-            score -= 5 //Score penalty for a non set
         }
         indexOfSelected = []
     }
@@ -117,4 +110,18 @@ class GameOfSet {
     func shuffleCardsInPlay() {
         cardsInPlay.shuffle() //Activated by the rotate gesture to shuffle the cards on the board
     }
+    
+    private func calculateScore(didDeselect: Bool) {
+        if didDeselect {
+            score -= 1 //Penalty for deselecting
+        }
+        if let set = isASet {
+            if set {
+                score += 5 //Successful set
+            } else {
+                score -= 5 //No set penalty
+            }
+        }
+    }
+    
 }
