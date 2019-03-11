@@ -68,7 +68,7 @@ class SymbolView: UIView {
             stripe.move(to: CGPoint(x: x, y: bounds.minY))
             stripe.addLine(to: CGPoint(x: x, y: bounds.maxY))
         }
-        stripe.lineWidth = strokeWidth / 3 //Stripe width function of the bounds size
+        stripe.lineWidth = strokeWidth / 3 //Stripe width is a function of the stroke width, which is a function of the bounds
         stripe.stroke()
     }
     

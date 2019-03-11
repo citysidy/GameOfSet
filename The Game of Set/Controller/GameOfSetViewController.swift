@@ -31,7 +31,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Properties
     /***************************************************************/
     
-    private let cardColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)] //Colors for the card symbols
+    private let cardColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)] //Colors for the card symbols (maybe this should be in the set card view but I like it here)
     
     private let selectionColors = ["select":#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),"set":#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),"noset":#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)] //Colors for the selection borders
     
@@ -68,7 +68,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction private func newGameButton(_ sender: UIButton) {
         newGame()
     }
-
+    
     @IBOutlet weak var settingsButtonLabel: UIButton!
     @IBAction private func settingsButton(_ sender: UIButton) {
         if game.cardsInPlay.count == 0 {return}
@@ -80,7 +80,6 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     /***************************************************************/
     
     override func viewDidLoad() {
-        configureFonts()
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
@@ -101,8 +100,8 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         self.view.addGestureRecognizer(swipeGestureRecognizer)
         swipeGestureRecognizer.delegate = self
     }
-    
-    override func viewDidLayoutSubviews() {
+        
+    override func viewDidLayoutSubviews() { //For some reason I couldn't override func layoutSubiews() so I used this instead
         //Update the views if the game is started and the main frame size changes
         if view.viewWithTag(-1)!.frame != grid.frame && game.cardsInPlay.count > 0 {
             updateViewFromModel()
@@ -110,7 +109,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        //Handle font accessiblity settings
+        //Handle font size accessiblity settings
         configureFonts()
     }
     
@@ -131,7 +130,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
             let view = gestureRecognizer.view //Being verbose since this part is confusing
             let loc = gestureRecognizer.location(in: view) //Get the location of the tap
             if let cardView = view { //Unwrap the view the tap recognized
-                if let sub = cardView.hitTest(loc, with: nil) { //Unwrap the subview at the tap location (not sure what the with: nil parameter is)
+                if let sub = cardView.hitTest(loc, with: nil) { //Unwrap the subview at the tap location (not sure what the 'with: nil' parameter is)
                     let subTag = sub.tag //Get the tag of the subview that was tapped
                     if let superView = sub.superview { //Unwrap the superview of the tapped view
                         let superTag = superView.tag //Get the tag of the superview that was tapped
@@ -174,6 +173,8 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         cardsInPlayCount = 0
         cardsOutOfPlayCount = 0
         cardsSelectedCount = 0
+        
+        //Create new game object and deal
         game = GameOfSet()
         game.dealTwelve()
         
@@ -227,7 +228,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
                         color = selectionColors["noset"]
                     }
                 }
-                cardsInPlay[index].highlightColor = color ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                cardsInPlay[index].highlightColor = color ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) //Had to add this default since I made the colors into a dictionary
             }
             view.addSubview(cardsInPlay[index]) //Add the card object as a subview
             cardsInPlay[index].tag = index + 1 //Tag the cards with index + 1 since tag 0 is used by default for all other views

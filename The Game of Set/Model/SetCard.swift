@@ -21,12 +21,14 @@ struct SetCard: CustomStringConvertible, Hashable {
     //MARK: - Properties
     /***************************************************************/
     
-    //SetCard has five properties
+    //SetCard has six properties
     
     let color: Color
     let shape: Shape
     let fill: Fill
     let pips: Pips
+    
+    var isFaceUp : Bool
     
     var cardHash: Int {
         return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
