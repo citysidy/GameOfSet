@@ -11,12 +11,18 @@ import Foundation
 class GameOfSet {
     
     var testMode = false //Activate with shake gesture so end of game conditions can be tested
-
+    
+    private(set) var score = 0
     private(set) var cards = [SetCard]()
-    private(set) var cardsInPlay: [SetCard] = []
+    private(set) var cardsInPlay: [SetCard] = [] {
+        didSet {
+            guard cardsInPlay.count >= 3 else {return}
+            findSets()
+        }
+    }
     private(set) var cardsOutOfPlay: [SetCard] = []
     private(set) var indexOfSelected: [Int] = []
-    private(set) var score = 0
+    private(set) var indicesOfSetsOnBoard: [[Int]] = []
     
     var isASet: Bool? { //Main game logic
         guard indexOfSelected.count == 3 else {return nil} //Optional is nil until 3 cards have been selected
@@ -48,7 +54,7 @@ class GameOfSet {
     //MARK: - Methods
     /***************************************************************/
     
-    func getRandomCard() -> SetCard? {
+    private func getRandomCard() -> SetCard? {
         if cards.count == 0 {return nil}
         return cards.remove(at: cards.count.rando)
     }
@@ -88,6 +94,10 @@ class GameOfSet {
         if isASet ?? false {
             replaceSet()
         }
+        clearSelected()
+    }
+    
+    func clearSelected() {
         indexOfSelected = []
     }
     
@@ -123,5 +133,23 @@ class GameOfSet {
             }
         }
     }
+    
+    private func findSets() { //Hint function brute forces sets on the board
+        indicesOfSetsOnBoard = []
+        mainLoop: for count1 in 0..<cardsInPlay.count - 2 {
+            for count2 in (count1 + 1)..<cardsInPlay.count - 1 {
+                for count3 in (count2 + 1)..<cardsInPlay.count {
+                    let testSet = [cardsInPlay[count1],cardsInPlay[count2],cardsInPlay[count3]]
+                    if (Array(String(testSet.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0 {
+                        indicesOfSetsOnBoard.append([count1,count2,count3])
+                        if indicesOfSetsOnBoard.count > 10 { //Limiting to avoid delays when too many cards are on the board
+                            break mainLoop
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     
 }

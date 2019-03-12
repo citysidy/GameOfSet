@@ -7,8 +7,6 @@
 //
 
 /*TODO:
-Fix scoring so it updates immediately instead of "on next tap"
-Hints
 Animations for cards
 Card shadows
 Animated popups for scoring
@@ -42,10 +40,15 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     //Counter variables to track game state
     private var cardsInPlayCount = 0
     private var cardsOutOfPlayCount = 0
-    private var cardsSelectedCount = 0
-    
+    private var cardsSelectedCount = 0 {
+        didSet {
+            if cardsSelectedCount == 3 { //Reset counter automatically so audio feedback works as intended
+                cardsSelectedCount = 0
+            }
+        }
+    }
     private var selectedCardIndex = 0 {
-        didSet { //Updated by touch events
+        didSet { //Updated by touch events and hints
             game.cardSelected(selectedCardIndex)
             updateViewFromModel()
         }
@@ -69,10 +72,13 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         newGame()
     }
     
-    @IBOutlet weak var settingsButtonLabel: UIButton!
-    @IBAction private func settingsButton(_ sender: UIButton) {
-        if game.cardsInPlay.count == 0 {return}
-        updateViewFromModel() //Temp action until settings are actually implemented
+    @IBOutlet weak var hintButtonLabel: UIButton!
+    @IBAction private func hintButton(_ sender: UIButton) { //Clears selected without penalty and selects one card guaranteed to be in a set
+        var hintSet = game.indicesOfSetsOnBoard[game.indicesOfSetsOnBoard.count.rando] //Get a random set; button disabled if no sets available
+        game.clearSelected()
+        cardsSelectedCount = 0
+        game.cardSelected(hintSet.remove(at: hintSet.count.rando)) //Get a random card
+        updateViewFromModel()
     }
     
     
@@ -80,6 +86,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     /***************************************************************/
     
     override func viewDidLoad() {
+        hintButtonLabel.isEnabled = false
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
@@ -101,7 +108,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         swipeGestureRecognizer.delegate = self
     }
         
-    override func viewDidLayoutSubviews() { //For some reason I couldn't override func layoutSubiews() so I used this instead
+    override func viewDidLayoutSubviews() { //For some reason I couldn't override func layoutSubviews() to be recognized so I used this instead
         //Update the views if the game is started and the main frame size changes
         if view.viewWithTag(-1)!.frame != grid.frame && game.cardsInPlay.count > 0 {
             updateViewFromModel()
@@ -123,6 +130,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Methods
     /***************************************************************/
     
+    //This function serves to get the index of the card that was tapped and caused me trouble because of the symbol subviews that were untagged; My fix is to add the tapped view and super view tags together; either you tapped a symbol and the super view is the correct tag or you tapped a card and the zero tag game board is the super; either way the sum is the number I want; I will clean this up once I learn a better way
     @objc private func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
@@ -185,7 +193,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         removeCardsFromBoard()
         calculateGrid()
         drawCardsOnBoard()
-        updateActionButtonLabel()
+        updateBottomLabels()
         updateTopLabels()
         audioAndHapticFeedback()
     }
@@ -228,16 +236,16 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
                         color = selectionColors["noset"]
                     }
                 }
-                cardsInPlay[index].highlightColor = color ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) //Had to add this default since I made the colors into a dictionary
+                cardsInPlay[index].highlightColor = color ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) //Had to add this default since I made the colors into a dictionary and therefore optional
             }
             view.addSubview(cardsInPlay[index]) //Add the card object as a subview
             cardsInPlay[index].tag = index + 1 //Tag the cards with index + 1 since tag 0 is used by default for all other views
         }
     }
     
-    private func updateActionButtonLabel() {
+    private func updateBottomLabels() {
         actionButtonLabel.isEnabled = true
-        if let set = game.isASet { //If 3 are selected (ie is a set)
+        if let set = game.isASet { //If 3 are selected
             if set {
                 if game.cards.count > 0 { //Check cards left in deck
                     actionButtonLabel.setTitle("Replace Set", for: .normal) //Set with cards left in deck
@@ -255,6 +263,14 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
                 actionButtonLabel.setTitle("Add 3", for: .normal) //Deck is not empty and 3 are not selected
             }
         }
+        if game.indicesOfSetsOnBoard.count > 0 { //Only enable hint button if there is a set on the board
+            hintButtonLabel.isEnabled = true
+        } else {
+            hintButtonLabel.isEnabled = false
+        }
+        var sets = String(game.indicesOfSetsOnBoard.count)
+        if game.indicesOfSetsOnBoard.count > 10 {sets = "10+"} //I cut off the brute force hint solver to avoid lag, so I wanted to indicate that
+        hintButtonLabel.setTitle("Hint: " + sets, for: .normal) //Hint button displays the number of valid sets on board
     }
     
     private func updateTopLabels() {
@@ -269,35 +285,34 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     private func audioAndHapticFeedback() {
         //First check is to see if number of cards in play or out of play changed, and if so play card sound
         if game.cardsInPlay.count != cardsInPlayCount || game.cardsOutOfPlay.count != cardsOutOfPlayCount {
-            cardsInPlayCount = game.cardsInPlay.count //After card count check, reset the count to current count
+            cardsInPlayCount = game.cardsInPlay.count //After card count check, set the count to current count
             cardsOutOfPlayCount = game.cardsOutOfPlay.count
-            if game.cards.count == 69 { //69 indicates a new game has started to play new game sound
-                playSound("cardShuffle", dot: "wav")
+            if game.cards.count == 69 { //69 indicates a new game has started
+                playSound("cardShuffle", dot: "wav") //New game sound
             } else {
-                playSound("cardSlide6", dot: "wav")
+                playSound("cardSlide6", dot: "wav") //Cards changed sound
             }
         }
         //Check for result of a card tap
         if let set = game.isASet { //If 3 are selected play set or no-set sound
-            cardsSelectedCount = 0 //Reset the counter whenever 3 have been selected
             if set {
                 playSound("ding", dot: "wav") //Set sound
             } else {
                 playSound("error", dot: "wav") //No-set sound
             }
-        } else if game.indexOfSelected.count > cardsSelectedCount { //Only play selected sound if the count is increasing
-            cardsSelectedCount = game.indexOfSelected.count //After check for increasing selection count, reset counter to current count
+        }
+        if game.indexOfSelected.count > cardsSelectedCount { //Only play selected sound if the count is increasing
             playSound("beep", dot: "wav") //Card selected sound
         }
-        if game.indexOfSelected.count == 0 {cardsSelectedCount = 0} //Reset the counter if the last card tap resulted in zero selection count (ie deselection with only one selected
-        hapticFeedback(called: "peek") //Every action gets a haptic shake
+        cardsSelectedCount = game.indexOfSelected.count
+        hapticFeedback(called: "peek") //Every view update gets a haptic shake
     }
     
     private func configureFonts() {
         scoreLabel.font = UIFont.preferredFont(forTextStyle: .title1)
         remainingCardsLabel.font = UIFont.preferredFont(forTextStyle: .callout)
         newGameButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
-        settingsButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        hintButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
         actionButtonLabel.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
     }
     

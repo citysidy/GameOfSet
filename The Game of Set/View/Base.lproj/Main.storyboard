@@ -53,9 +53,9 @@
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGb-hA-Zqm">
                                         <rect key="frame" x="277.33333333333331" y="0.0" width="104.66666666666669" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                        <state key="normal" title="Settings"/>
+                                        <state key="normal" title="Hint"/>
                                         <connections>
-                                            <action selector="settingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PSe-K0-ifS"/>
+                                            <action selector="hintButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PSe-K0-ifS"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -90,10 +90,10 @@
                     </view>
                     <connections>
                         <outlet property="actionButtonLabel" destination="1dV-nW-yFl" id="mSZ-Y5-Fnz"/>
+                        <outlet property="hintButtonLabel" destination="DGb-hA-Zqm" id="YIW-C4-Z3X"/>
                         <outlet property="newGameButtonLabel" destination="ZU4-65-ELi" id="Ey9-O7-Yuu"/>
                         <outlet property="remainingCardsLabel" destination="Di0-Zj-g8E" id="cYa-Dl-bbx"/>
                         <outlet property="scoreLabel" destination="rkm-E3-XbT" id="9pJ-hR-vAJ"/>
-                        <outlet property="settingsButtonLabel" destination="DGb-hA-Zqm" id="YIW-C4-Z3X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
