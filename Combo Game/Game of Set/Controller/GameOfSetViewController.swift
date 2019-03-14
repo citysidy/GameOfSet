@@ -7,6 +7,7 @@
 //
 
 /*TODO:
+game over detection - should be possible now that brute force solving is immplemented
 Animations for cards
 Card shadows
 Animated popups for scoring
@@ -16,7 +17,7 @@ Timer based score modifiers
 Light Mode/Dark Mode
 Easy play mode (less card properties)
 scoreboard
-endgame
+
 */
 
 
@@ -269,7 +270,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
             hintButtonLabel.isEnabled = false
         }
         var sets = String(game.indicesOfSetsOnBoard.count)
-        if game.indicesOfSetsOnBoard.count > 10 {sets = "10+"} //I cut off the brute force hint solver to avoid lag, so I wanted to indicate that
+        if game.indicesOfSetsOnBoard.count > 3 {sets = "3+"} //I cut off the brute force hint solver to avoid lag, so I wanted to indicate that
         hintButtonLabel.setTitle("Hint: " + sets, for: .normal) //Hint button displays the number of valid sets on board
     }
     

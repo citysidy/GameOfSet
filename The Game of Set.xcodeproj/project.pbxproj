@@ -18,6 +18,13 @@
 		DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B1509220BC86400D4F314 /* SetCard.swift */; };
 		DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4B150B220BC88100D4F314 /* GameOfSet.swift */; };
 		DE7A2FE022164B440028D6DF /* Untitled781.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DE7A2FDF22164B440028D6DF /* Untitled781.jpeg */; };
+		DED68CEE2238320D001C591E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DED68CED2238320D001C591E /* Default-568h@2x.png */; };
+		DED68CF02238331F001C591E /* party.wav in Resources */ = {isa = PBXBuildFile; fileRef = DED68CEF2238331F001C591E /* party.wav */; };
+		DED68CF222383345001C591E /* metronome.wav in Resources */ = {isa = PBXBuildFile; fileRef = DED68CF122383345001C591E /* metronome.wav */; };
+		DED68CFA2238341B001C591E /* ConcentrationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED68CF92238341B001C591E /* ConcentrationCard.swift */; };
+		DED68CFF2238349D001C591E /* GameOfConcentration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED68CFE2238349D001C591E /* GameOfConcentration.swift */; };
+		DEE5844122386408005343C0 /* ConcentrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5844022386408005343C0 /* ConcentrationViewController.swift */; };
+		DEE5844422386C3C005343C0 /* ConcentrationThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5844322386C3C005343C0 /* ConcentrationThemeViewController.swift */; };
 		DEEDD2AA22110B830030084C /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2A922110B830030084C /* ding.wav */; };
 		DEEDD2AC22110B8F0030084C /* error.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2AB22110B8F0030084C /* error.wav */; };
 		DEEDD2AE22110CF20030084C /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = DEEDD2AD22110CF20030084C /* beep.wav */; };
@@ -39,6 +46,13 @@
 		DE4B1509220BC86400D4F314 /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
 		DE4B150B220BC88100D4F314 /* GameOfSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfSet.swift; sourceTree = "<group>"; };
 		DE7A2FDF22164B440028D6DF /* Untitled781.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Untitled781.jpeg; sourceTree = "<group>"; };
+		DED68CED2238320D001C591E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		DED68CEF2238331F001C591E /* party.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = party.wav; path = "../../../Concentration/Concentration/Supporting Files/party.wav"; sourceTree = "<group>"; };
+		DED68CF122383345001C591E /* metronome.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = metronome.wav; path = "../../../Concentration/Concentration/Supporting Files/metronome.wav"; sourceTree = "<group>"; };
+		DED68CF92238341B001C591E /* ConcentrationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationCard.swift; sourceTree = "<group>"; };
+		DED68CFE2238349D001C591E /* GameOfConcentration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfConcentration.swift; sourceTree = "<group>"; };
+		DEE5844022386408005343C0 /* ConcentrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationViewController.swift; sourceTree = "<group>"; };
+		DEE5844322386C3C005343C0 /* ConcentrationThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationThemeViewController.swift; sourceTree = "<group>"; };
 		DEEDD2A922110B830030084C /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
 		DEEDD2AB22110B8F0030084C /* error.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = error.wav; sourceTree = "<group>"; };
 		DEEDD2AD22110CF20030084C /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
@@ -60,7 +74,7 @@
 		DE4B14E9220BC4C200D4F314 = {
 			isa = PBXGroup;
 			children = (
-				DE4B14F4220BC4C200D4F314 /* The Game of Set */,
+				DE4B14F4220BC4C200D4F314 /* Combo Game */,
 				DE4B14F3220BC4C200D4F314 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,22 +87,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DE4B14F4220BC4C200D4F314 /* The Game of Set */ = {
+		DE4B14F4220BC4C200D4F314 /* Combo Game */ = {
 			isa = PBXGroup;
 			children = (
-				DE4B150D220BC88600D4F314 /* Model */,
-				DE4B1507220BC82A00D4F314 /* View */,
-				DE4B1508220BC83700D4F314 /* Controller */,
+				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
+				DED68CFC2238343B001C591E /* Game of Concentration */,
+				DED68CEC223831B5001C591E /* Game of Set */,
 				DE4B150E220BC89000D4F314 /* Supporting Files */,
 				DE4B1501220BC4C400D4F314 /* Info.plist */,
 			);
-			path = "The Game of Set";
+			path = "Combo Game";
 			sourceTree = "<group>";
 		};
 		DE4B1507220BC82A00D4F314 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE4B14F9220BC4C200D4F314 /* Main.storyboard */,
 				DE25A46B22282854009EE8DF /* SymbolView.swift */,
 				DE25A4472223E85A009EE8DF /* SetCardView.swift */,
 				DE25A4452223D4D9009EE8DF /* Grid.swift */,
@@ -117,16 +130,56 @@
 			isa = PBXGroup;
 			children = (
 				DE4B14FC220BC4C400D4F314 /* Assets.xcassets */,
+				DED68CED2238320D001C591E /* Default-568h@2x.png */,
 				DEEDD2B1221111180030084C /* cardShuffle.wav */,
 				DEEDD2AF22110F090030084C /* cardSlide6.wav */,
 				DEEDD2AD22110CF20030084C /* beep.wav */,
+				DED68CEF2238331F001C591E /* party.wav */,
 				DEEDD2AB22110B8F0030084C /* error.wav */,
+				DED68CF122383345001C591E /* metronome.wav */,
 				DEEDD2A922110B830030084C /* ding.wav */,
 				DE7A2FDF22164B440028D6DF /* Untitled781.jpeg */,
 				DE4B14F5220BC4C200D4F314 /* AppDelegate.swift */,
 				DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DED68CEC223831B5001C591E /* Game of Set */ = {
+			isa = PBXGroup;
+			children = (
+				DE4B150D220BC88600D4F314 /* Model */,
+				DE4B1507220BC82A00D4F314 /* View */,
+				DE4B1508220BC83700D4F314 /* Controller */,
+			);
+			path = "Game of Set";
+			sourceTree = "<group>";
+		};
+		DED68CFC2238343B001C591E /* Game of Concentration */ = {
+			isa = PBXGroup;
+			children = (
+				DED68CFD22383468001C591E /* Model */,
+				DEE5844222386491005343C0 /* Controller */,
+			);
+			path = "Game of Concentration";
+			sourceTree = "<group>";
+		};
+		DED68CFD22383468001C591E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DED68CF92238341B001C591E /* ConcentrationCard.swift */,
+				DED68CFE2238349D001C591E /* GameOfConcentration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEE5844222386491005343C0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DEE5844022386408005343C0 /* ConcentrationViewController.swift */,
+				DEE5844322386C3C005343C0 /* ConcentrationThemeViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,8 +243,11 @@
 				DE4B1500220BC4C400D4F314 /* LaunchScreen.storyboard in Resources */,
 				DEEDD2B022110F090030084C /* cardSlide6.wav in Resources */,
 				DEEDD2B2221111180030084C /* cardShuffle.wav in Resources */,
+				DED68CF02238331F001C591E /* party.wav in Resources */,
+				DED68CEE2238320D001C591E /* Default-568h@2x.png in Resources */,
 				DE7A2FE022164B440028D6DF /* Untitled781.jpeg in Resources */,
 				DE4B14FD220BC4C400D4F314 /* Assets.xcassets in Resources */,
+				DED68CF222383345001C591E /* metronome.wav in Resources */,
 				DEEDD2AE22110CF20030084C /* beep.wav in Resources */,
 				DEEDD2AC22110B8F0030084C /* error.wav in Resources */,
 				DEEDD2AA22110B830030084C /* ding.wav in Resources */,
@@ -208,9 +264,13 @@
 			files = (
 				DE4B150A220BC86400D4F314 /* SetCard.swift in Sources */,
 				DE25A4482223E85A009EE8DF /* SetCardView.swift in Sources */,
+				DEE5844122386408005343C0 /* ConcentrationViewController.swift in Sources */,
 				DE4B150C220BC88100D4F314 /* GameOfSet.swift in Sources */,
+				DED68CFA2238341B001C591E /* ConcentrationCard.swift in Sources */,
 				DE4B14F8220BC4C200D4F314 /* GameOfSetViewController.swift in Sources */,
 				DE25A4462223D4D9009EE8DF /* Grid.swift in Sources */,
+				DED68CFF2238349D001C591E /* GameOfConcentration.swift in Sources */,
+				DEE5844422386C3C005343C0 /* ConcentrationThemeViewController.swift in Sources */,
 				DE4B14F6220BC4C200D4F314 /* AppDelegate.swift in Sources */,
 				DE25A46C22282854009EE8DF /* SymbolView.swift in Sources */,
 			);
@@ -225,7 +285,8 @@
 				DE4B14FA220BC4C200D4F314 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
+			path = "Combo Game";
+			sourceTree = SOURCE_ROOT;
 		};
 		DE4B14FE220BC4C400D4F314 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -360,7 +421,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5567FWX9J9;
-				INFOPLIST_FILE = "The Game of Set/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Combo Game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -378,7 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5567FWX9J9;
-				INFOPLIST_FILE = "The Game of Set/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Combo Game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

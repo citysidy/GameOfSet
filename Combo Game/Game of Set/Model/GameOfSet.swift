@@ -142,7 +142,7 @@ class GameOfSet {
                     let testSet = [cardsInPlay[count1],cardsInPlay[count2],cardsInPlay[count3]]
                     if (Array(String(testSet.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0 {
                         indicesOfSetsOnBoard.append([count1,count2,count3])
-                        if indicesOfSetsOnBoard.count > 10 { //Limiting to avoid delays when too many cards are on the board
+                        if indicesOfSetsOnBoard.count > 3 { //Limiting to avoid delays when too many cards are on the board
                             break mainLoop
                         }
                     }

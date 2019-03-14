@@ -11,18 +11,18 @@ import Foundation
 struct SetCard: CustomStringConvertible, Hashable {
     
     var description: String {return "\(color)\(shape)\(fill)\(pips)"} //Custom String Convertible implementation
-    var hashValue : Int {return cardHash} //Hashable implementation
-    
-    static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
-        return lhs.cardHash == rhs.cardHash
+    var hashValue : Int { //Hashable implementation
+        return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
     }
-
+    static func == (lhs: SetCard, rhs: SetCard) -> Bool { //Equatable implementation required by Hashable
+        return lhs.hashValue == rhs.hashValue
+    }
+    
     
     //MARK: - Properties
     /***************************************************************/
     
-    //SetCard has six properties
-    
+    //SetCard has five properties
     let color: Color
     let shape: Shape
     let fill: Fill
@@ -30,15 +30,11 @@ struct SetCard: CustomStringConvertible, Hashable {
     
     var isFaceUp : Bool
     
-    var cardHash: Int {
-        return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
-    }
     
     //MARK: - Types
     /***************************************************************/
     
     //SetCard defines four Types, one for each property
-    
     enum Color: Int, CustomStringConvertible { //Define Color Type
         var description: String {return "C\(rawValue)"}
         
