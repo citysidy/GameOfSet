@@ -13,22 +13,17 @@ class GameOfSet {
     var testMode = false //Activate with shake gesture so end of game conditions can be tested
     
     private(set) var score = 0
-    private(set) var cards = [SetCard]()
-    private(set) var cardsInPlay: [SetCard] = [] {
-        didSet {
-            guard cardsInPlay.count >= 3 else {return}
-            findSets()
-        }
-    }
-    private(set) var cardsOutOfPlay: [SetCard] = []
+    private(set) var deck = [SetCard]()
+    private(set) var cardInPlay: [SetCard] = [] {didSet{if cardInPlay.count > 2 {findSets()}}}
+    private(set) var cardOutOfPlay: [SetCard] = []
     private(set) var indexOfSelected: [Int] = []
-    private(set) var indicesOfSetsOnBoard: [[Int]] = []
+    private(set) var indicesOfSets: [[Int]] = []
     
     var isASet: Bool? { //Main game logic
         guard indexOfSelected.count == 3 else {return nil} //Optional is nil until 3 cards have been selected
         var selectedCards = [SetCard]()
         for item in indexOfSelected {
-            selectedCards.append(cardsInPlay[item]) //Create array of 3 selected cards
+            selectedCards.append(cardInPlay[item]) //Create array of 3 selected cards
         }
         if testMode {return true} //Any 3 are a match in test mode
         return (Array(String(selectedCards.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0 //Adds up the numeric values (0, 1, or 2) of each property of the 3 selected cards - Only correct sets will sum to a multiple of 3. If the count of non 3 multiples is zero, return true (it is a set).
@@ -43,7 +38,7 @@ class GameOfSet {
             for shape in SetCard.Shape.all {
                 for fill in SetCard.Fill.all {
                     for pips in SetCard.Pips.all {
-                        cards.append(SetCard(color: color, shape: shape, fill: fill, pips: pips, isFaceUp: false))
+                        deck.append(SetCard(color: color, shape: shape, fill: fill, pips: pips))
                     }
                 }
             }
@@ -54,9 +49,16 @@ class GameOfSet {
     //MARK: - Methods
     /***************************************************************/
     
-    private func getRandomCard() -> SetCard? {
-        if cards.count == 0 {return nil}
-        return cards.remove(at: cards.count.rando)
+    func dealTwelve() {
+        for _ in 1...4 {action()} //Since action method deals 3 cards, we call it 4 times to get the starting 12 cards of a game
+    }
+    
+    func shuffleCardsInPlay() {
+        cardInPlay.shuffle() //Activated by the rotate gesture to shuffle the cards on the board
+    }
+    
+    func clearSelected() {
+        indexOfSelected = []
     }
     
     func action() {
@@ -65,13 +67,12 @@ class GameOfSet {
         } else {  //Action button deals 3 additional cards in most cases
             for _ in 1...3 {
                 if let newCard = getRandomCard() {
-                    cardsInPlay.append(newCard)
+                    cardInPlay.append(newCard)
                 }
             }
         }
     }
     
-    //This dirty code is a result of the assignment requirements that a fourth selection should replace or clear the first 3 selected and select the fourth - I feel like there is a better implementation but I cannot grok it
     func cardSelected(_ cardIndex: Int) {
         var deselection = false
         if indexOfSelected.contains(cardIndex) { //Selecting a card that is already selected
@@ -97,28 +98,21 @@ class GameOfSet {
         clearSelected()
     }
     
-    func clearSelected() {
-        indexOfSelected = []
-    }
-    
     private func replaceSet() {
         for item in indexOfSelected.sorted(by: >) { //Must replace in reverse order to prevent index errors
             if let newCard = getRandomCard() { //Only replaces if cards are available
-                let oldCard = cardsInPlay[item]
-                cardsOutOfPlay.append(oldCard)
-                cardsInPlay[item] = newCard
+                let oldCard = cardInPlay[item]
+                cardOutOfPlay.append(oldCard)
+                cardInPlay[item] = newCard
             } else {
-                cardsOutOfPlay.append(cardsInPlay.remove(at: item)) //If no cards available, just remove from play
+                cardOutOfPlay.append(cardInPlay.remove(at: item)) //If no cards available, just remove from play
             }
         }
     }
     
-    func dealTwelve() {
-        for _ in 1...4 {action()} //Since action method deals 3 cards, we call it 4 times to get the starting 12 cards of a game
-    }
-    
-    func shuffleCardsInPlay() {
-        cardsInPlay.shuffle() //Activated by the rotate gesture to shuffle the cards on the board
+    private func getRandomCard() -> SetCard? {
+        if deck.count == 0 {return nil}
+        return deck.remove(at: deck.count.rando)
     }
     
     private func calculateScore(didDeselect: Bool) {
@@ -135,14 +129,14 @@ class GameOfSet {
     }
     
     private func findSets() { //Hint function brute forces sets on the board
-        indicesOfSetsOnBoard = []
-        mainLoop: for count1 in 0..<cardsInPlay.count - 2 {
-            for count2 in (count1 + 1)..<cardsInPlay.count - 1 {
-                for count3 in (count2 + 1)..<cardsInPlay.count {
-                    let testSet = [cardsInPlay[count1],cardsInPlay[count2],cardsInPlay[count3]]
+        indicesOfSets = []
+        mainLoop: for count1 in 0..<cardInPlay.count - 2 {
+            for count2 in (count1 + 1)..<cardInPlay.count - 1 {
+                for count3 in (count2 + 1)..<cardInPlay.count {
+                    let testSet = [cardInPlay[count1],cardInPlay[count2],cardInPlay[count3]]
                     if (Array(String(testSet.map{$0.hashValue}.reduce(0, +))).filter{$0 != "0" && $0 != "3" && $0 != "6"}.count) == 0 {
-                        indicesOfSetsOnBoard.append([count1,count2,count3])
-                        if indicesOfSetsOnBoard.count > 3 { //Limiting to avoid delays when too many cards are on the board
+                        indicesOfSets.append([count1,count2,count3])
+                        if indicesOfSets.count > 3 { //Limiting to avoid delays when too many cards are on the board
                             break mainLoop
                         }
                     }

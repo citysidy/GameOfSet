@@ -30,17 +30,16 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Properties
     /***************************************************************/
     
-    private let cardColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)] //Colors for the card symbols (maybe this should be in the set card view but I like it here)
-    
     private let selectionColors = ["select":#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),"set":#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),"noset":#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)] //Colors for the selection borders
     
     private var game = GameOfSet()
-    private var grid = Grid(layout: .dimensions(rowCount: 1, columnCount: 1))
-    private var cardsInPlay: [SetCardView] = []
+    private var grid = Grid(layout: .dimensions(rowCount: 4, columnCount: 3))
+    private lazy var cardSize = grid[0]!.size
+    private var cardsOnBoard: [SetCardView] = []
     
     //Counter variables to track game state
-    private var cardsInPlayCount = 0
-    private var cardsOutOfPlayCount = 0
+    private var cardsOnBoardCount = 0
+    private var cardsOffBoardCount = 0
     private var cardsSelectedCount = 0 {
         didSet {
             if cardsSelectedCount == 3 { //Reset counter automatically so audio feedback works as intended
@@ -62,6 +61,10 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet private weak var scoreLabel: UILabel!
     @IBOutlet private weak var remainingCardsLabel: UILabel!
     
+    @IBOutlet weak var setsButtonLabel: UIButton!
+    @IBAction func setsButton(_ sender: UIButton) {
+    }
+    
     @IBOutlet private weak var actionButtonLabel: UIButton!
     @IBAction private func actionButton(_ sender: UIButton) {
         game.action()
@@ -75,7 +78,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var hintButtonLabel: UIButton!
     @IBAction private func hintButton(_ sender: UIButton) { //Clears selected without penalty and selects one card guaranteed to be in a set
-        var hintSet = game.indicesOfSetsOnBoard[game.indicesOfSetsOnBoard.count.rando] //Get a random set; button disabled if no sets available
+        var hintSet = game.indicesOfSets[game.indicesOfSets.count.rando] //Get a random set; button disabled if no sets available
         game.clearSelected()
         cardsSelectedCount = 0
         game.cardSelected(hintSet.remove(at: hintSet.count.rando)) //Get a random card
@@ -87,9 +90,12 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     /***************************************************************/
     
     override func viewDidLoad() {
+        //Inital board setup
         hintButtonLabel.isEnabled = false
         actionButtonLabel.isEnabled = false
         actionButtonLabel.setTitle("", for: .normal)
+        setsButtonLabel.isEnabled = false
+        setsButtonLabel.setTitle("", for: .normal)
         remainingCardsLabel.isHidden = true
         
         //Tap Gesture
@@ -108,10 +114,10 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         self.view.addGestureRecognizer(swipeGestureRecognizer)
         swipeGestureRecognizer.delegate = self
     }
-        
-    override func viewDidLayoutSubviews() { //For some reason I couldn't override func layoutSubviews() to be recognized so I used this instead
-        //Update the views if the game is started and the main frame size changes
-        if view.viewWithTag(-1)!.frame != grid.frame && game.cardsInPlay.count > 0 {
+    
+    override func viewDidLayoutSubviews() {
+        //Update the views if the game is started or the main frame size changes
+        if view.viewWithTag(-1)!.frame != grid.frame && game.cardInPlay.count > 0 {
             updateViewFromModel()
         }
     }
@@ -135,7 +141,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
-            if game.cardsInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
+            if game.cardInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
             let view = gestureRecognizer.view //Being verbose since this part is confusing
             let loc = gestureRecognizer.location(in: view) //Get the location of the tap
             if let cardView = view { //Unwrap the view the tap recognized
@@ -156,7 +162,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func handleSwipe(gestureRecognizer: UISwipeGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
-            if game.cardsInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
+            if game.cardInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
             actionButtonLabel.sendActions(for: .touchUpInside) //Swipe down just duplicates the Action button function
         default: break
         }
@@ -165,7 +171,7 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func handleRotate(gestureRecognizer: UIRotationGestureRecognizer) {
         switch gestureRecognizer.state {
         case .ended:
-            if game.cardsInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
+            if game.cardInPlay.count == 0 {newGame(); return} //Gesture on empty game board will start a new game
             game.shuffleCardsInPlay()
             updateViewFromModel()
         default: break
@@ -175,12 +181,12 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     private func newGame() {
         //Set up game board
         actionButtonLabel.isEnabled = true
-        actionButtonLabel.isHidden = false
+        setsButtonLabel.isEnabled = true
         remainingCardsLabel.isHidden = false
         
         //Initialize game variables
-        cardsInPlayCount = 0
-        cardsOutOfPlayCount = 0
+        cardsOnBoardCount = 0
+        cardsOffBoardCount = 0
         cardsSelectedCount = 0
         
         //Create new game object and deal
@@ -200,12 +206,12 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func removeCardsFromBoard() {
-        cardsInPlay = []
+        cardsOnBoard = []
         view.subviews.filter{$0 is SetCardView}.forEach({$0.removeFromSuperview()}) //Filter all the views for type SetCardView then remove
     }
     
     private func calculateGrid() {
-        let count = game.cardsInPlay.count //Count the cards on the board
+        let count = game.cardInPlay.count //Count the cards on the board
         if count == 0 {return} //If no cards on board (ie game not started) abort
         let long = count.isqrt //Integer square root (ie whole number portion of the square root)
         let short = (count + long - 1) / long //Next whole number of ratio of count to count's integer square root
@@ -219,36 +225,98 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    private enum CardState {
+        case unchanged
+        case deal
+        case discard
+        case selected
+    }
+    
+    
+    private func indexChangedCards() -> ([Int],CardState) {
+        let difference = game.cardInPlay.count - cardsOnBoardCount
+        switch difference {
+        case _ where difference < 0:
+            return (Array(game.cardOutOfPlay.indices.suffix(3)),.discard)
+        case _ where difference > 0:
+            return (Array(game.cardInPlay.indices.suffix(difference)),.deal)
+        default:
+            return (game.indexOfSelected,.selected)
+        }
+    }
+    
     private func drawCardsOnBoard() {
-        for index in game.cardsInPlay.indices { //Iterate through all the cards on board
-            let card = game.cardsInPlay[index]
-            if let frame = grid[index] { //Card frame derived from grid
-                let cardView = SetCardView(card: card, frame: frame) //Create card object from custom class passing frame and card model
-                cardView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-                cardView.cardColor = cardColors[card.color.rawValue] //Use model property to index the card colors arrray
-                cardsInPlay.append(cardView) //Insert card object into array of cards in play
-            }
-            if game.indexOfSelected.contains(index) { //If the card is one of the selected cards add a border highlight
-                var color = selectionColors["select"]
-                if let set = game.isASet { //If 3 are selected the highlight color is different
-                    if set {
-                        color = selectionColors["set"]
-                    } else {
-                        color = selectionColors["noset"]
-                    }
+        let (changedCardsIndices,state) = indexChangedCards()
+        print(changedCardsIndices)
+        var counter = 0
+        for index in game.cardInPlay.indices { //Iterate through all the cards on board
+            let card = game.cardInPlay[index]
+            var startFrame = grid[index]!
+            var endFrame = setsButtonLabel.frame
+            var face = true
+            var moveAndFlip = false
+            if changedCardsIndices.contains(index) {
+                switch state {
+                case .deal:
+                    face = false
+                    moveAndFlip = true
+                    startFrame = actionButtonLabel.frame
+                    endFrame = grid[index]!
+                case .discard:
+                    moveAndFlip = true
+                case .selected:
+                    break
+                default: break
                 }
-                cardsInPlay[index].highlightColor = color ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0) //Had to add this default since I made the colors into a dictionary and therefore optional
             }
-            view.addSubview(cardsInPlay[index]) //Add the card object as a subview
-            cardsInPlay[index].tag = index + 1 //Tag the cards with index + 1 since tag 0 is used by default for all other views
+            let cardView = SetCardView(card: card, frame: startFrame, isFaceUp: face)
+            cardView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+            cardsOnBoard.append(cardView) //Insert card object into array of cards in play
+            drawCardBorder(for: index)
+            view.addSubview(cardsOnBoard[index]) //Add the card object as a subview
+            cardsOnBoard[index].tag = index + 1 //Tag the cards with index + 1 since tag 0 is used by default for all other views
+            if moveAndFlip {
+                UIViewPropertyAnimator.runningPropertyAnimator(
+                    withDuration: 0.5,
+                    delay: 0.22 * Double(counter),
+                    options: [.curveEaseInOut],
+                    animations: {self.cardsOnBoard[index].frame = endFrame},
+                    completion: {if $0 == .end {UIView.transition(
+                        with: self.cardsOnBoard[index],
+                        duration: 0.6,
+                        options: [.curveEaseInOut,.transitionFlipFromTop],
+                        animations: {self.cardsOnBoard[index].cardIsFaceUp = true} ,
+                        completion: {finished in }
+                        )}})
+                counter += 1
+            }
+        }
+    }
+    
+    private func dealView(index: Int) {
+        
+    }
+    
+    private func drawCardBorder(for index: Int) {
+        if game.indexOfSelected.contains(index) { //If the card is one of the selected cards add a border highlight
+            var color = selectionColors["select"]
+            if let set = game.isASet { //If 3 are selected the highlight color is different
+                if set {
+                    color = selectionColors["set"]
+                } else {
+                    color = selectionColors["noset"]
+                }
+            }
+            cardsOnBoard[index].highlightColor = color! //Force unwrap
         }
     }
     
     private func updateBottomLabels() {
+        setsButtonLabel.setTitle("Sets: \(game.cardOutOfPlay.count / 3)", for: .normal)
         actionButtonLabel.isEnabled = true
         if let set = game.isASet { //If 3 are selected
             if set {
-                if game.cards.count > 0 { //Check cards left in deck
+                if game.deck.count > 0 { //Check cards left in deck
                     actionButtonLabel.setTitle("Replace Set", for: .normal) //Set with cards left in deck
                 } else {
                     actionButtonLabel.setTitle("Clear Set", for: .normal) //Set but no cards left to replace the set with
@@ -257,25 +325,25 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
                 actionButtonLabel.setTitle("Clear", for: .normal) //3 selected but was not a set
             }
         } else { //Number of selected is not 3
-            if game.cards.count == 0 { //Deck is empty
+            if game.deck.count == 0 { //Deck is empty
                 actionButtonLabel.setTitle("No Cards Left", for: .normal) //Deck is empty and 3 are not selected
                 actionButtonLabel.isEnabled = false
             } else {
                 actionButtonLabel.setTitle("Add 3", for: .normal) //Deck is not empty and 3 are not selected
             }
         }
-        if game.indicesOfSetsOnBoard.count > 0 { //Only enable hint button if there is a set on the board
+        if game.indicesOfSets.count > 0 { //Only enable hint button if there is a set on the board
             hintButtonLabel.isEnabled = true
         } else {
             hintButtonLabel.isEnabled = false
         }
-        var sets = String(game.indicesOfSetsOnBoard.count)
-        if game.indicesOfSetsOnBoard.count > 3 {sets = "3+"} //I cut off the brute force hint solver to avoid lag, so I wanted to indicate that
+        var sets = String(game.indicesOfSets.count)
+        if game.indicesOfSets.count > 3 {sets = "3+"} //I cut off the brute force hint solver to avoid lag, so I wanted to indicate that
         hintButtonLabel.setTitle("Hint: " + sets, for: .normal) //Hint button displays the number of valid sets on board
     }
     
     private func updateTopLabels() {
-        remainingCardsLabel.text = "Cards Remaining: \(game.cards.count)"
+        remainingCardsLabel.text = "Cards Remaining: \(game.deck.count)"
         if game.testMode {
             scoreLabel.text = "TEST MODE"
         } else {
@@ -285,10 +353,10 @@ class GameOfSetViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func audioAndHapticFeedback() {
         //First check is to see if number of cards in play or out of play changed, and if so play card sound
-        if game.cardsInPlay.count != cardsInPlayCount || game.cardsOutOfPlay.count != cardsOutOfPlayCount {
-            cardsInPlayCount = game.cardsInPlay.count //After card count check, set the count to current count
-            cardsOutOfPlayCount = game.cardsOutOfPlay.count
-            if game.cards.count == 69 { //69 indicates a new game has started
+        if game.cardInPlay.count != cardsOnBoardCount || game.cardOutOfPlay.count != cardsOffBoardCount {
+            cardsOnBoardCount = game.cardInPlay.count //After card count check, set the count to current count
+            cardsOffBoardCount = game.cardOutOfPlay.count
+            if game.deck.count == 69 { //69 indicates a new game has started
                 playSound("cardShuffle", dot: "wav") //New game sound
             } else {
                 playSound("cardSlide6", dot: "wav") //Cards changed sound

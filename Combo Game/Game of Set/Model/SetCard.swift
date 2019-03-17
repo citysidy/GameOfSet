@@ -10,7 +10,7 @@ import Foundation
 
 struct SetCard: CustomStringConvertible, Hashable {
     
-    var description: String {return "\(color)\(shape)\(fill)\(pips)"} //Custom String Convertible implementation
+    var description: String {return "\(color) \(shape) \(fill) \(pips)"} //Custom String Convertible implementation
     var hashValue : Int { //Hashable implementation
         return (10000 + color.rawValue * 1000 + shape.rawValue * 100 + fill.rawValue * 10 + pips.rawValue)
     }
@@ -27,16 +27,13 @@ struct SetCard: CustomStringConvertible, Hashable {
     let shape: Shape
     let fill: Fill
     let pips: Pips
-    
-    var isFaceUp : Bool
-    
-    
+        
     //MARK: - Types
     /***************************************************************/
     
     //SetCard defines four Types, one for each property
     enum Color: Int, CustomStringConvertible { //Define Color Type
-        var description: String {return "C\(rawValue)"}
+        var description: String {return "Color:\(rawValue)"}
         
         case c0
         case c1
@@ -46,7 +43,7 @@ struct SetCard: CustomStringConvertible, Hashable {
     }
     
     enum Shape: Int, CustomStringConvertible { //Define Shape Type
-        var description: String {return "S\(rawValue)"}
+        var description: String {return "Shape:\(rawValue)"}
         
         case s0
         case s1
@@ -56,7 +53,7 @@ struct SetCard: CustomStringConvertible, Hashable {
     }
     
     enum Fill: Int, CustomStringConvertible { //Define Fill Type
-        var description: String {return "F\(rawValue)"}
+        var description: String {return "Fill:\(rawValue)"}
         
         case f0
         case f1
@@ -66,7 +63,7 @@ struct SetCard: CustomStringConvertible, Hashable {
     }
     
     enum Pips: Int, CustomStringConvertible { //Define Count Type
-        var description: String {return "P\(rawValue)"}
+        var description: String {return "Pips:\(rawValue)"}
         
         case p0
         case p1

@@ -16,7 +16,7 @@
             <objects>
                 <viewController id="YGZ-lO-1sJ" customClass="ConcentrationThemeViewController" customModule="The_Game_of_Set" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="m7F-SF-2bw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1004"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="p2X-sX-8Eh">
@@ -332,10 +332,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wZy-ga-D3b" userLabel="Base Stack">
-                                <rect key="frame" x="16" y="936" width="736" height="44"/>
+                                <rect key="frame" x="16" y="930" width="736" height="44"/>
                                 <subviews>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="ZU4-65-ELi">
-                                        <rect key="frame" x="0.0" y="0.0" width="205.5" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="142.5" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <state key="normal" title="New Game"/>
                                         <connections>
@@ -343,15 +343,23 @@
                                         </connections>
                                     </button>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="1dV-nW-yFl">
-                                        <rect key="frame" x="213.5" y="0.0" width="309" height="44"/>
+                                        <rect key="frame" x="150.5" y="0.0" width="213.5" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <state key="normal" title="Add 3"/>
                                         <connections>
                                             <action selector="actionButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gqT-xq-SSM"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K87-ak-Soa">
+                                        <rect key="frame" x="372" y="0.0" width="213.5" height="44"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                        <state key="normal" title="Sets: 0"/>
+                                        <connections>
+                                            <action selector="setsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2Eq-2Y-qjE"/>
+                                        </connections>
+                                    </button>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGb-hA-Zqm">
-                                        <rect key="frame" x="530.5" y="0.0" width="205.5" height="44"/>
+                                        <rect key="frame" x="593.5" y="0.0" width="142.5" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <state key="normal" title="Hint"/>
                                         <connections>
@@ -363,23 +371,24 @@
                                     <constraint firstItem="DGb-hA-Zqm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1dV-nW-yFl" secondAttribute="trailing" constant="8" id="36P-Fe-hfB"/>
                                     <constraint firstItem="1dV-nW-yFl" firstAttribute="width" secondItem="ZU4-65-ELi" secondAttribute="width" multiplier="1.5:1" id="Bax-bo-azU"/>
                                     <constraint firstItem="1dV-nW-yFl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZU4-65-ELi" secondAttribute="trailing" constant="8" id="NtH-8i-3Lx"/>
+                                    <constraint firstItem="K87-ak-Soa" firstAttribute="width" secondItem="1dV-nW-yFl" secondAttribute="width" id="bJZ-sF-Xsz"/>
                                     <constraint firstItem="ZU4-65-ELi" firstAttribute="width" secondItem="DGb-hA-Zqm" secondAttribute="width" id="jPE-6L-gLQ"/>
                                 </constraints>
                             </stackView>
                             <view opaque="NO" tag="-1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Xy-Ab4" userLabel="Playing Area">
-                                <rect key="frame" x="16" y="87" width="732" height="843"/>
+                                <rect key="frame" x="16" y="87" width="736" height="839"/>
                                 <gestureRecognizers/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ehb-Xy-Ab4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="5t8-DM-8y6"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ehb-Xy-Ab4" secondAttribute="trailing" constant="20" id="60J-Qb-nCd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ehb-Xy-Ab4" secondAttribute="trailing" constant="16" id="60J-Qb-nCd"/>
                             <constraint firstItem="Di0-Zj-g8E" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Hn7-tN-D2Q"/>
                             <constraint firstItem="ehb-Xy-Ab4" firstAttribute="top" secondItem="Di0-Zj-g8E" secondAttribute="bottom" constant="8" id="M7p-rE-oT4"/>
                             <constraint firstItem="wZy-ga-D3b" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="NgW-wT-cGb"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ehb-Xy-Ab4" secondAttribute="bottom" constant="44" id="Xe6-qe-0or"/>
-                            <constraint firstItem="wZy-ga-D3b" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="6" id="bch-cI-b4a"/>
+                            <constraint firstItem="1dV-nW-yFl" firstAttribute="top" secondItem="ehb-Xy-Ab4" secondAttribute="bottom" constant="4" id="Rxe-G7-Yzc"/>
+                            <constraint firstItem="wZy-ga-D3b" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bch-cI-b4a"/>
                             <constraint firstItem="rkm-E3-XbT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dyd-kI-81z"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wZy-ga-D3b" secondAttribute="trailing" constant="16" id="hPo-Iv-OW0"/>
                             <constraint firstItem="rkm-E3-XbT" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="mLI-3d-UUZ"/>
@@ -395,6 +404,7 @@
                         <outlet property="newGameButtonLabel" destination="ZU4-65-ELi" id="Ey9-O7-Yuu"/>
                         <outlet property="remainingCardsLabel" destination="Di0-Zj-g8E" id="cYa-Dl-bbx"/>
                         <outlet property="scoreLabel" destination="rkm-E3-XbT" id="9pJ-hR-vAJ"/>
+                        <outlet property="setsButtonLabel" destination="K87-ak-Soa" id="1sw-la-UsV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

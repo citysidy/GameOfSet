@@ -10,28 +10,38 @@ import UIKit
 
 class SetCardView: UIView {
     
+    
     //MARK: - Properties
     /***************************************************************/
     
-    private let cardBackgroundColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    private let cardSymbolColors = [#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)] //Colors for the card symbols
+
+    private let cardFace: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    private let cardBack: UIColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
     
-    private var setCard: SetCard
-    private var cardPips: Int
-    private var cardFrame: CGRect
+    private let cardFrame: CGRect
+    private let colorIndex: Int
+    private let cardSymbol: Int
+    private let cardFill: Int
+    private let cardPips: Int
+    
+    var cardIsFaceUp: Bool {didSet{setNeedsDisplay()}}
     
     private var symbolSubView: [SymbolView] = [] //Array to hold the symbols
     
-    var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-    var cardColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    var highlightColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)    
     
     
     //MARK: - Init IBOutlets Actions
     /***************************************************************/
     
-    init(card: SetCard, frame: CGRect) { //Using initializer instead of dummy values
+    init(card: SetCard, frame: CGRect, isFaceUp: Bool) { //Using initializer instead of dummy values
         cardFrame = frame
-        setCard = card
+        colorIndex = card.color.rawValue
+        cardSymbol = card.shape.rawValue
+        cardFill = card.fill.rawValue
         cardPips = card.pips.rawValue
+        cardIsFaceUp = isFaceUp
         super.init(frame: frame)
     }
     
@@ -62,7 +72,11 @@ class SetCardView: UIView {
     
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds.insetBy(dx: cardSpacing, dy: cardSpacing), cornerRadius: cornerRadius)
-        cardBackgroundColor.setFill()
+        if cardIsFaceUp {
+            cardFace.setFill()
+        } else {
+            cardBack.setFill()
+        }
         highlightColor.setStroke()
         roundedRect.lineWidth = strokeWidth
         roundedRect.stroke()
@@ -76,15 +90,17 @@ class SetCardView: UIView {
     
     //Generate the subviews
     private func addSubViews() {
-        for index in 0...cardPips {
-            let symbolView = SymbolView()
-            symbolView.symbolType = setCard.shape.rawValue
-            symbolView.symbolColor = cardColor
-            symbolView.symbolFill = setCard.fill.rawValue
-            symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds
-            symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-            symbolSubView.append(symbolView)
-            self.addSubview(symbolSubView[index])
+        if cardIsFaceUp {
+            for index in 0...cardPips {
+                let symbolView = SymbolView()
+                symbolView.symbolType = cardSymbol
+                symbolView.symbolColor = cardSymbolColors[colorIndex]
+                symbolView.symbolFill = cardFill
+                symbolView.frame = bounds.insetBy(dx: cardSpacing, dy: cardSpacing).thirds
+                symbolView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                symbolSubView.append(symbolView)
+                self.addSubview(symbolSubView[index])
+            }
         }
     }
     
